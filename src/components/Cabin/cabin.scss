@@ -1,0 +1,61 @@
+@import '../../style/colors.scss';
+@import '../../style/mixins.scss';
+
+// .cabinCol {
+//   // border: 1px solid blue;
+//   // flex: 1;
+//   // width: 100%;
+//   align-self: flex-start;
+//   width: 100px;
+//   min-height: 70px;
+//   flex: 1;
+//   // border-top: $border;
+//   // border-bottom: 1px solid darken($primary, 5%);
+//   // @include flexBox(row, wrap, center, flex-start);
+//   // margin-bottom: 5px;
+//
+//   &:first-of-type {
+//     // border-top: transparent;
+//   }
+//   overflow: hidden;
+// }
+
+.cabin {
+  @include flexBox(column, nowrap, center, flex-start);
+  background: #313131;
+
+  flex: 1;
+  min-height: 50px;
+  height: auto;
+  width: 100px;
+  overflow: hidden;
+  // border-right: 1px solid darken(grey, 10%);
+  // background: pink;
+  // border-bottom: 1px solid blue;
+
+  > img {
+
+    // display: none;
+    object-fit: cover;
+    width: 100px;
+    max-height: 100%;
+  }
+}
+
+.cabinTitle {
+  width: 100%;
+  height: 20px;
+  @include linearGradient(45deg, rgba(255,255,255, 0.8), rgba(255,255,255, 0.9));
+  font-size: 12px;
+  transform: translateY(-100%);
+  padding-left: 5px;
+}
+
+.calendar {
+  @include flexBox(row, nowrap, center, flex-start);
+  flex: 1;
+  height: 100%;
+  min-width: 300px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}

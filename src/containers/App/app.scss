@@ -1,0 +1,25 @@
+@import '../../style/colors.scss';
+@import '../../style/mixins.scss';
+
+.app {
+  // border: 1px solid blue;
+  height: 60vh;
+  width: 400px;
+  background: $white;
+  color: $text;
+  border-radius: 2px;
+  overflow: hidden;
+  // border: 1px solid darken(grey, 0%);
+  // border-right-color: lighten($primary, 10%);
+  // border-bottom-color: lighten($primary, 10%);
+  @include boxShadow;
+  @include transition;
+}
+
+.viewWrap {
+  // border: 1px solid blue;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  @include flexBox(row, nowrap, center, center);
+}

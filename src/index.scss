@@ -1,0 +1,35 @@
+@import './style/colors.scss';
+@import './style/mixins.scss';
+
+html {
+  overflow: hidden;
+  font-size: 16px;
+}
+html, body {
+  height: 100%;
+}
+
+body {
+  @include flexBox(row, nowrap, center, center);
+
+  margin: 0;
+  padding: 0;
+  // font-family: 'Anonymous Pro', monospace;
+  font-family: 'Roboto', sans-serif;
+  background: $bg;
+  color: $text;
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}

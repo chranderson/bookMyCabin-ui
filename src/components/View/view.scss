@@ -1,0 +1,40 @@
+@import '../../style/colors.scss';
+@import '../../style/mixins.scss';
+
+.view {
+  @include flexBox(column, nowrap, center, flex-start);
+  // opacity: 0.6;
+  // border: 1px solid orange;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.header {
+  @include flexBox(row, nowrap, center, space-between);
+  // border: 1px solid blue;
+  background: $primary;
+  height: 50px;
+  width: 100%;
+  padding: 0 1em;
+  border-bottom: 1px solid darken($primary, 8%);
+}
+
+.content {
+  @include flexBox(row, nowrap, center, center);
+  // border: 1px solid white;
+  background: darken($primary, 10%);
+  height: calc(100% - 50px);
+  width: 100%;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.datePickerWrap {
+  @include flexBox(row, nowrap, center, flex-start);
+  max-width: 120px;
+  overflow: hidden;
+  height: 100%;
+  // margin-right: 10px;
+  // border: 1px solid red;
+}

@@ -1,0 +1,32 @@
+@import '../../../style/colors.scss';
+@import '../../../style/mixins.scss';
+
+.mainWrap {
+  width: 100%;
+  height: 100%;
+  @include flexBox(row, nowrap, center, flex-start);
+}
+
+.cabinCol {
+  @include flexBox(column, nowrap, center, flex-start);
+  width: 100px;
+  max-width: 100px;
+  height: 100%;
+  overflow: hidden;
+  align-self: flex-end;
+  box-shadow: 10px 0 10px -4px rgba(0,0,0,0.5);
+  background: black;
+}
+.cabinHeader {
+  height: 20px;
+  width: 100%;
+}
+
+.calendarCol {
+  @include flexBox(row, nowrap, flex-start, flex-start);
+  height: 100%;
+  max-width: calc(100% - 100px);
+  overflow-x: scroll;
+  flex: 1;
+  border-left: 1px solid darken($primary, 5%);
+}

@@ -1,0 +1,77 @@
+@import '../../style/colors.scss';
+
+$glow: rgba(255,255,255,0.9);
+
+.MenuBar {
+  // background: lighten($bgColor, 10%);
+  // display: flex;
+  // flex-flow: row nowrap;
+  // width: 100%;
+  // align-items: center;
+  // justify-content: center;
+  // margin-top: auto;
+  min-height: 200px;
+  // border: 1px solid yellow;
+  max-width: 60%;
+
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  @media (min-width: 500px) {
+    padding: 1em 2em;
+  }
+
+  transition: transform 0.35s ease-in-out;
+
+  > .menuIcon {
+    opacity: 0.5;
+    // transform: translateY(0);
+  }
+
+  &:hover > .menuIcon {
+    opacity: 0.8;
+    // transform: translateY(-200%);
+    box-shadow: 0 0 8px 0px $glow, inset 0 0 8px -1px $glow;
+  }
+}
+.closed {
+  transform: translateY(-30%);
+}
+
+.open {
+  transform: tranlateY(0);
+  background: linear-gradient(0deg, transparent 65%, rgba(0,0,0,0.3));
+}
+
+.tabWrap {
+  // flex: 1;
+  // border: 1px solid yellow;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-width: 60%;
+  // max-width: 1000px;
+}
+
+.menuIcon {
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  border: 1px solid rgba(255,255,255,0.8);
+  margin: 0 auto;
+  margin-top: 1em;
+  border-radius: 50%;
+  box-shadow: 0 0 8px 0px $glow, inset 0 0 8px -1px $glow;
+  transition: opacity 0.3s, box-shadow 0.5s, transform 0.6s ease-in-out;
+  opacity: 0.5;
+
+  transform: scale(0.9);
+  &:hover {
+    transform: scale(1);
+    // box-shadow: 0 0 8px -1px $glow;
+  }
+}
