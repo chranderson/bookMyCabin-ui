@@ -28,17 +28,13 @@
   min-height: 50px;
   height: auto;
   width: 100px;
+  height: 80px;
   overflow: hidden;
-  // border-right: 1px solid darken(grey, 10%);
-  // background: pink;
-  // border-bottom: 1px solid blue;
 
   > img {
-
-    // display: none;
+    height: 100%;
+    width: auto;
     object-fit: cover;
-    width: 100px;
-    max-height: 100%;
   }
 }
 

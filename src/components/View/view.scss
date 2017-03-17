@@ -7,6 +7,7 @@
   // border: 1px solid orange;
   height: 100%;
   width: 100%;
+  min-height: 100%;
   overflow: hidden;
 }
 
@@ -24,7 +25,8 @@
   @include flexBox(row, nowrap, center, center);
   // border: 1px solid white;
   background: darken($primary, 10%);
-  height: calc(100% - 50px);
+  // height: calc(100% - 50px);
+  
   width: 100%;
   overflow: hidden;
   overflow-y: scroll;

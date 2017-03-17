@@ -2,18 +2,27 @@
 @import '../../style/mixins.scss';
 
 .app {
-  // border: 1px solid blue;
-  height: 60vh;
-  width: 400px;
-  background: $white;
+  // height: 100%;
+  height: 100%;
+  width: 100vw;
+  @media (min-width: 600px) {
+    // max-height: 60vh;
+    width: 400px;
+    @include boxShadow;
+  }
+
+
+
+
+  background: black;
   color: $text;
   border-radius: 2px;
   overflow: hidden;
   // border: 1px solid darken(grey, 0%);
   // border-right-color: lighten($primary, 10%);
   // border-bottom-color: lighten($primary, 10%);
-  @include boxShadow;
-  @include transition;
+
+  // @include transition;
 }
 
 .viewWrap {

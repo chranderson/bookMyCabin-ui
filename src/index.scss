@@ -7,14 +7,16 @@ html {
 }
 html, body {
   height: 100%;
+  width: 100%;
 }
 
 body {
-  @include flexBox(row, nowrap, center, center);
-
+  @include flexBox(row, nowrap, flex-start, center);
+  @media (min-width: 600px) {
+    @include flexBox(row, nowrap, center, center);
+  }
   margin: 0;
   padding: 0;
-  // font-family: 'Anonymous Pro', monospace;
   font-family: 'Roboto', sans-serif;
   background: $bg;
   color: $text;
