@@ -7,7 +7,7 @@ import {
 } from '../../components';
 
 import {
-  // Menu,
+  Menu,
   Main
 } from '../../containers';
 
@@ -61,15 +61,11 @@ export default class App extends Component {
 
     return (
       <div className={`app ${scrollUp ? 'up' : 'down'}`} onWheel={this.handleWheel}>
-        { /*
-          scrollUp
-          ? <Menu />
-          : null
-        */}
+
         <div className="viewWrap">
           { this.renderView() }
         </div>
-
+        <Menu />
       </div>
     )
   }

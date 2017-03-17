@@ -1,64 +1,50 @@
 import React, { Component, PropTypes } from 'react';
-// import { connect } from 'react-redux';
-// import * as aboutActionCreators from '../../redux/reducers/About/about';
+import FontIcon from 'material-ui/FontIcon';
+import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
+import Paper from 'material-ui/Paper';
+import IconLocationOn from 'material-ui/svg-icons/communication/location-on';
 
-import {
-  MenuBar
-} from '../../components';
+import './menu.scss';
 
-// import {
-  //
-// } from '../../containers';
-
-
-// @connect(
-//   state => ({
-//     about: state.about.time,
-//   }),
-// )
+const bookDatesIcon = <FontIcon className="material-icons">add_shopping_cart</FontIcon>;
+const listIcon = <FontIcon className="material-icons">list</FontIcon>;
+const nearbyIcon = <IconLocationOn />;
 
 export default class Menu extends Component {
 
   static propTypes = {
     pages: PropTypes.array,
   }
-  static defaultProps = {
-    pages: [
-      'about',
-      'news',
-      'shows',
-      'music',
-      'photos',
-      'videos',
-    ]
-  }
+  // static defaultProps = {}
+
+  select = (item) => console.log('item: ', item);
 
   render() {
 
-    const {
-      pages
-    } = this.props;
-
-    // const {} = this.state;
-
-    const style = {
-      // border: '1px solid yellow',
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      left: 0,
-      zIndex: 10,
-      display: 'flex',
-      justifyContent: 'center',
-      // margin: '0 auto',
-      // width: '100%',
-
-    };
+    // const {
+    //   pages
+    // } = this.props;
 
     return (
-      <div style={style}>
-        <MenuBar options={pages} />
-      </div>
+      <Paper zDepth={10}>
+        <BottomNavigation>
+          <BottomNavigationItem
+            label="Added Dates"
+            icon={listIcon}
+            onTouchTap={() => this.select(0)}
+          />
+          <BottomNavigationItem
+            label="Book Dates"
+            icon={bookDatesIcon}
+            onTouchTap={() => this.select(1)}
+          />
+          <BottomNavigationItem
+            label="Nearby"
+            icon={nearbyIcon}
+            onTouchTap={() => this.select(2)}
+          />
+        </BottomNavigation>
+      </Paper>
     );
   }
 }
