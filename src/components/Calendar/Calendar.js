@@ -20,6 +20,10 @@ export default class Calendar extends Component {
     price: 185
   }
 
+  handleDateSelect = (evt) => {
+    console.log('handleDateSelect: ', evt);
+  }
+
   renderDayCol(date, indx) {
     const {
       cabins,
@@ -37,8 +41,8 @@ export default class Calendar extends Component {
     };
     return (
       <div className="dayCol" key={indx} id={date}>
-        <div className="dayHeader">{date}</div>
-        { cabins.map((cabin, index) => <Day key={index} price={price} booked={isBooked(cabin, date)} /> ) }
+        <div className="contentHeader">{date}</div>
+        { cabins.map((cabin, index) => <Day cabinId={cabin} date={date} key={index} onSelect={this.handleDateSelect} price={price} booked={isBooked(cabin, date)} /> ) }
       </div>
     );
   }

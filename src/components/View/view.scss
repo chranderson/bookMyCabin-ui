@@ -3,8 +3,6 @@
 
 .view {
   @include flexBox(column, nowrap, center, flex-start);
-  // opacity: 0.6;
-  // border: 1px solid orange;
   height: 100%;
   width: 100%;
   min-height: 100%;
@@ -13,7 +11,6 @@
 
 .header {
   @include flexBox(row, nowrap, center, space-between);
-  // border: 1px solid blue;
   background: $primary;
   height: 50px;
   width: 100%;
@@ -23,13 +20,25 @@
 
 .content {
   @include flexBox(row, nowrap, center, center);
-  // border: 1px solid white;
   background: darken($primary, 10%);
-  // height: calc(100% - 50px);
-  
+  height: calc(100% - 50px);
+
   width: 100%;
   overflow: hidden;
   overflow-y: scroll;
+}
+
+.contentHeader {
+  @include flexBox(row, nowrap, center, center);
+  font-size: 0.75em;
+  font-weight: 500;
+  height: 26px;
+  background: $white;
+  width: 100%;
+  border-bottom: 1px solid grey;
+  // border-right: 1px solid grey;
+
+  // padding: 5px;
 }
 
 .datePickerWrap {

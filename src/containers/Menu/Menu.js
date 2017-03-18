@@ -2,13 +2,15 @@ import React, { Component, PropTypes } from 'react';
 import FontIcon from 'material-ui/FontIcon';
 import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 import Paper from 'material-ui/Paper';
-import IconLocationOn from 'material-ui/svg-icons/communication/location-on';
+// import IconLocationOn from 'material-ui/svg-icons/communication/location-on';
 
 import './menu.scss';
 
-const bookDatesIcon = <FontIcon className="material-icons">add_shopping_cart</FontIcon>;
+// const bookDatesIcon = <FontIcon className="material-icons">add_shopping_cart</FontIcon>;
 const listIcon = <FontIcon className="material-icons">list</FontIcon>;
-const nearbyIcon = <IconLocationOn />;
+const arrowUpIcon = <FontIcon className="material-icons">arrow_drop_up</FontIcon>;
+const removeIcon = <FontIcon className="material-icons">remove</FontIcon>;
+
 
 export default class Menu extends Component {
 
@@ -26,7 +28,7 @@ export default class Menu extends Component {
     // } = this.props;
 
     return (
-      <Paper zDepth={10}>
+      <Paper zDepth={2}>
         <BottomNavigation>
           <BottomNavigationItem
             label="Added Dates"
@@ -34,14 +36,14 @@ export default class Menu extends Component {
             onTouchTap={() => this.select(0)}
           />
           <BottomNavigationItem
-            label="Book Dates"
-            icon={bookDatesIcon}
-            onTouchTap={() => this.select(1)}
+            label="Book Now"
+            icon={arrowUpIcon}
+            onTouchTap={() => this.select('bookNow')}
           />
           <BottomNavigationItem
-            label="Nearby"
-            icon={nearbyIcon}
-            onTouchTap={() => this.select(2)}
+            label="$520.00"
+            icon={removeIcon}
+            onTouchTap={() => this.select('bill')}
           />
         </BottomNavigation>
       </Paper>

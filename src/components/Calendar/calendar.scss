@@ -17,8 +17,8 @@
 
 .dayCol {
   height: 100%;
-  // border-right: 1px solid black;
-  background: darken($bg, 20%);
+  // border-right: 1px solid grey;
+  // background: darken($bg, 20%);
   @include flexBox(column, nowrap, center, flex-start);
 }
 

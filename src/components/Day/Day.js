@@ -6,33 +6,49 @@ import './day.scss'
 export default class Day extends Component {
 
   static propTypes = {
+    cabinId: PropTypes.string,
     date: PropTypes.string,
     price: PropTypes.number,
-    select: PropTypes.func,
+    onSelect: PropTypes.func,
     booked: PropTypes.bool
   }
 
   static defaultProps = {
     date: '--',
     price: '999',
-    select: (date) => console.log('select: ', date),
+    onSelect: (date) => console.log('onSelect: ', date),
     booked: true
   }
 
-  handleClick = () => {
-    this.props.select(this.props.date);
+  constructor(props) {
+    super(props);
+    this.state = {
+      selected: false
+    }
   }
+
+  handleClick = () => {
+    this.props.onSelect({cabinId: this.props.cabinId, date: this.props.date})
+    this.setState({
+      selected: !this.state.selected
+    });
+  };
 
   render() {
 
     const {
+      cabinId,
       date,
       price,
       booked
     } = this.props;
 
+    const {
+      selected
+    } = this.state;
+
     const iconStyles = {
-      fill: 'red',
+      color: 'grey',
     };
 
     let dayStyle = 'day';
@@ -46,7 +62,7 @@ export default class Day extends Component {
                  : ' enabled';
 
     return (
-      <div className={dayStyle}>
+      <div id={`${date}_${cabinId}`} className={dayStyle}>
         {
           booked
           ? <div className="notAvail">Not Avail</div>
@@ -54,10 +70,12 @@ export default class Day extends Component {
               ${price}<span>.00</span>
             </div>
         }
-        <div className={statusStyle} onClick={booked && date ? this.handleClick : null}>
+        <div className={statusStyle} onClick={!booked && date ? this.handleClick : null}>
           { booked
             ? <FontIcon className="material-icons" style={iconStyles}>block</FontIcon>
-            : <FontIcon className="material-icons" style={iconStyles}>add_box</FontIcon> }
+            : <FontIcon className="material-icons" style={iconStyles}>
+              { selected ? 'check_box' : 'check_box_outline_blank' }
+              </FontIcon> }
 
         </div>
       </div>

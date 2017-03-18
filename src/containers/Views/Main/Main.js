@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 // import DatePicker from 'material-ui/DatePicker';
 // import RaisedButton from 'material-ui/RaisedButton';
 // import getBookedDates from './getBookedDates';
+import Paper from 'material-ui/Paper';
 
 import './main.scss';
 
@@ -93,10 +94,12 @@ export default class Main extends Component {
 
     // return cabins.map((cabin, index) => <div className="cabinListItem" key={index}>{cabin.id}</div>);
     return (
-      <div className="cabinCol">
-        <div className="cabinHeader"></div>
-        {cabins.map((cabin, index) => <Cabin id={cabin.id} imgs={cabin.imgs} key={index} name={cabin.name} price={cabin.price} />)}
-      </div>
+      <Paper zDepth={0}>
+        <div className="cabinCol">
+          <div className="contentHeader"></div>
+          {cabins.map((cabin, index) => <Cabin id={cabin.id} imgs={cabin.imgs} key={index} name={cabin.name} price={cabin.price} />)}
+        </div>
+      </Paper>
     );
   }
 
