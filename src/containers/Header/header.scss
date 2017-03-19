@@ -1,0 +1,25 @@
+@import '../../style/colors.scss';
+@import '../../style/mixins.scss';
+
+.appHeader {
+  @include flexBox(row, nowrap, center, space-between);
+  background: $primary;
+  height: 50px;
+  min-height: 50px;
+  width: 100%;
+  padding: 0 1em;
+  border-bottom: 1px solid darken($primary, 8%);
+}
+
+.toolBar {
+
+}
+
+.datePickerWrap {
+  @include flexBox(row, nowrap, center, flex-start);
+  max-width: 120px;
+  overflow: hidden;
+  height: 100%;
+  // margin-right: 10px;
+  // border: 1px solid red;
+}

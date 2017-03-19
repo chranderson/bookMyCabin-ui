@@ -10,28 +10,30 @@ export default class Day extends Component {
     date: PropTypes.string,
     price: PropTypes.number,
     onSelect: PropTypes.func,
-    booked: PropTypes.bool
+    booked: PropTypes.bool,
+    selected: PropTypes.bool
   }
 
   static defaultProps = {
     date: '--',
     price: '999',
     onSelect: (date) => console.log('onSelect: ', date),
-    booked: true
+    booked: true,
+    selected: false,
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      selected: false
-    }
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     selected: props.selected
+  //   }
+  // }
 
   handleClick = () => {
     this.props.onSelect({cabinId: this.props.cabinId, date: this.props.date})
-    this.setState({
-      selected: !this.state.selected
-    });
+    // this.setState({
+    //   selected: !this.state.selected
+    // });
   };
 
   render() {
@@ -40,12 +42,13 @@ export default class Day extends Component {
       cabinId,
       date,
       price,
-      booked
+      booked,
+      selected
     } = this.props;
 
-    const {
-      selected
-    } = this.state;
+    // const {
+    //   selected
+    // } = this.state;
 
     const iconStyles = {
       color: 'grey',

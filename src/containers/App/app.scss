@@ -2,34 +2,21 @@
 @import '../../style/mixins.scss';
 
 .app {
-  position: relative;
-  // height: 100%;
+  @include flexBox(column, nowrap, flex-start, flex-start);
+  // position: relative;
   height: 100%;
+  // height: 100%;
   width: 100vw;
+
+  max-height: 100vh;
+
   @media (min-width: 600px) {
-    // max-height: 60vh;
     width: 400px;
+    max-height: 60vh;
     @include boxShadow;
   }
-
-
-
-
   background: black;
   color: $text;
   border-radius: 2px;
   overflow: hidden;
-  // border: 1px solid darken(grey, 0%);
-  // border-right-color: lighten($primary, 10%);
-  // border-bottom-color: lighten($primary, 10%);
-
-  // @include transition;
-}
-
-.viewWrap {
-  // border: 1px solid blue;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  @include flexBox(row, nowrap, center, center);
 }

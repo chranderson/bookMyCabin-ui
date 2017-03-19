@@ -2,43 +2,17 @@
 @import '../../style/mixins.scss';
 
 .view {
+  // @include flexBox(column, nowrap, flex-start, flex-start);
+  // height: 100%;
+  width: 100%;
+  // min-height: 100%;
+  // overflow: hidden;
+  flex: 1;
   @include flexBox(column, nowrap, center, flex-start);
-  height: 100%;
-  width: 100%;
-  min-height: 100%;
-  overflow: hidden;
-}
-
-.header {
-  @include flexBox(row, nowrap, center, space-between);
-  background: $primary;
-  height: 50px;
-  width: 100%;
-  padding: 0 1em;
-  border-bottom: 1px solid darken($primary, 8%);
-}
-
-.content {
-  @include flexBox(row, nowrap, center, center);
   background: darken($primary, 10%);
-  height: calc(100% - 50px);
-
-  width: 100%;
-  overflow: hidden;
-  overflow-y: scroll;
-}
-
-.contentHeader {
-  @include flexBox(row, nowrap, center, center);
-  font-size: 0.75em;
-  font-weight: 500;
-  height: 26px;
-  background: $white;
-  width: 100%;
-  border-bottom: 1px solid grey;
-  // border-right: 1px solid grey;
-
-  // padding: 5px;
+  // overflow: hidden;
+  // overflow-y: scroll;
+  position: relative;
 }
 
 .datePickerWrap {

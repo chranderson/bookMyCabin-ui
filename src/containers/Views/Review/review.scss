@@ -1,0 +1,16 @@
+@import '../../../style/colors.scss';
+@import '../../../style/mixins.scss';
+
+.reviewView {
+  flex: 1;
+  // height: 100%;
+  width: 100%;
+  // overflow: hidden;
+  overflow-y: auto;
+  @include flexBox(column, nowrap, flex-start, flex-start);
+  padding: 1em;
+}
+
+.title {
+  font-weight: 500;
+}

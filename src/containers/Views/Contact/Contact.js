@@ -1,27 +1,33 @@
 import React, { Component, PropTypes } from 'react';
 
+import './contact.scss';
+
+import {
+  View
+} from '../../../components';
 
 export default class Contact extends Component {
 
   static propTypes = {
-    msg: PropTypes.string
+    title: PropTypes.string
   }
 
   static defaultProps = {
-    msg: 'Contact Page'
+    title: 'Contact Form'
   }
 
   render() {
-  // const styles = require('Contact.scss');
 
     const {
-      msg
+      title
     } = this.props;
 
     return (
-      <div>
-        { msg }
-      </div>
+      <View>
+        <div className="contactView">
+          { title }
+        </div>
+      </View>
     );
   }
 }

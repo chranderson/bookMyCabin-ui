@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import './view.scss';
-import DatePicker from 'material-ui/DatePicker';
+
 
 export default class View extends Component {
 
   static propTypes = {
-    date: PropTypes.any,
-    onDateChange: PropTypes.func,
+    // date: PropTypes.any,
     title: PropTypes.string,
+    flexDir: PropTypes.string,
   }
 
   static defaultProps = {
@@ -18,27 +18,13 @@ export default class View extends Component {
 
     const {
       children,
-      date,
-      title
+      // date,
+      // title
     } = this.props;
 
     return (
       <div className="view">
-        <div className="header">
-          <div className="title">
-            {title}
-          </div>
-          <div className="toolBar">
-            <div className="datePickerWrap">
-              <DatePicker hintText={'yolo'}
-                          value={date}
-                          onChange={this.props.onDateChange} />
-            </div>
-          </div>
-        </div>
-        <div className="content">
-          { children }
-        </div>
+        { children }
       </div>
     );
   }

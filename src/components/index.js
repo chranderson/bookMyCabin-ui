@@ -6,5 +6,4 @@ export View from './View/View';
 
 
 export Cabin from './Cabin/Cabin';
-export Calendar from './Calendar/Calendar';
 export Day from './Day/Day';

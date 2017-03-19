@@ -1,0 +1,10 @@
+@import '../../../style/colors.scss';
+@import '../../../style/mixins.scss';
+
+.contactView {
+  flex: 1;
+  width: 100%;
+  @include flexBox(row, nowrap, center, center);
+  font-size: 2em;
+  font-weight: 500;
+}

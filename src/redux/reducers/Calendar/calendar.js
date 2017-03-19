@@ -6,9 +6,11 @@ import {
 
 const GET_DATES = 'calendar/GET_DATES';
 const LOAD_EVENTS = 'calendar/LOAD_EVENTS';
+const SELECT_DATE = 'calendar/SELECT_DATE';
 
 
 const initialState = {
+  controlledDate: new Date(),
   days: getWeek(),
   bookings: {
     cabin1: [],
@@ -44,10 +46,22 @@ export default (state = initialState, action) => {
         ...state,
         bookings: updatedBookings
       };
+    case SELECT_DATE:
+      return {
+        ...state,
+        controlledDate: action.date
+      };
     default:
       return state;
   }
 };
+
+export function selectDate(date) {
+  return {
+    type: SELECT_DATE,
+    date
+  };
+}
 
 export function getDates(date, count) {
   return {

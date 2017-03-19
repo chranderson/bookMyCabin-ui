@@ -7,8 +7,11 @@ import {
 } from '../../components';
 
 import {
+  Contact,
+  Header,
   Menu,
-  Main
+  Main,
+  Review
 } from '../../containers';
 
 import './app.scss';
@@ -19,12 +22,16 @@ injectTapEventPlugin();
 
 @connect(
   state => ({
+    currentView: state.nav.currentView,
+    controlledDate: state.calendar.controlledDate,
     time: state.info.time,
   }),
 )
 export default class App extends Component {
 
   static propTypes = {
+    controlledDate: PropTypes.any,
+    currentView: PropTypes.string,
     // something: PropTypes.any,
     time: PropTypes.string
   }
@@ -32,6 +39,7 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
+      // controlledDate: new Date(),
       scrollUp: false
     }
     this.handleWheel = this.handleWheel.bind(this);
@@ -50,7 +58,17 @@ export default class App extends Component {
   }
 
   renderView() {
-    return <Main />
+    const {
+      controlledDate,
+      currentView
+    } = this.props;
+
+    let view;
+    if (currentView === 'main') view = (<Main date={controlledDate} />);
+    if (currentView === 'contact') view = (<Contact />);
+    if (currentView === 'review') view = (<Review />);
+
+    return view;
   }
 
   render() {
@@ -61,10 +79,8 @@ export default class App extends Component {
 
     return (
       <div className={`app ${scrollUp ? 'up' : 'down'}`} onWheel={this.handleWheel}>
-
-        <div className="viewWrap">
-          { this.renderView() }
-        </div>
+        <Header />
+        { this.renderView() }
         <Menu />
       </div>
     )

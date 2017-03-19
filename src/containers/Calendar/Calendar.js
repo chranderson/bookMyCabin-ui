@@ -1,0 +1,119 @@
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+
+import Paper from 'material-ui/Paper';
+
+import {
+  updateSelected,
+  // removeItem
+} from '../../redux/reducers/UserData/userData';
+
+import './calendar.scss'
+
+import {
+  Cabin,
+  Day
+} from '../../components';
+
+
+@connect(
+  state => ({
+    selectedItems: state.userData.selected,
+  }),
+  ({
+    updateSelected,
+  })
+)
+export default class Calendar extends Component {
+
+  static propTypes = {
+    updateSelected: PropTypes.func,
+    selectedItems: PropTypes.object,
+    cabins: PropTypes.array,
+    dates: PropTypes.array,
+    bookings: PropTypes.object,
+    id: PropTypes.string,
+    price: PropTypes.number
+  }
+
+  static defaultProps = {
+    price: 185,
+  }
+
+  handleDateSelect = (item) => {
+    this.props.updateSelected(item);
+  }
+
+  renderCabinCol() {
+    return (
+      this.props.cabins.map((cabin, index) => {
+         return (
+           <Cabin id={cabin.id}
+                  imgs={cabin.imgs}
+                  key={index}
+                  name={cabin.name}
+                  price={cabin.price} />
+         );
+      })
+    )
+  }
+
+  renderDayCol(date, indx) {
+    const {
+      cabins,
+      // dates,
+      bookings,
+      price,
+      selectedItems
+    } = this.props;
+
+    const cabinIds = cabins.map(cabin => cabin.id);
+
+    const isBooked = (cabinId, day) => {
+      return bookings[cabinId].some(today => today === day);
+    };
+
+    return (
+      <div className="dayCol" key={indx} id={date}>
+        <div className="dayHeader">{date}</div>
+        {
+          cabinIds.map((cabin, index) => {
+            const isSelected = selectedItems[cabin] && selectedItems[cabin].includes(date);
+
+            return (
+              <Day cabinId={cabin}
+                   date={date}
+                   key={index}
+                   onSelect={this.handleDateSelect}
+                   price={price}
+                   selected={isSelected}
+                   booked={isBooked(cabin, date)} />
+            );
+          })
+        }
+      </div>
+    );
+  }
+
+  render() {
+
+    const {
+      dates,
+      // id,
+    } = this.props;
+
+    return (
+      <div className="calendar">
+        <div className="cabinCol">
+          <Paper zDepth={0}>
+            <div className="cabinHeader"></div>
+            { this.renderCabinCol() }
+          </Paper>
+        </div>
+        <div className="calendarCol">
+          { dates.map((date, index) => this.renderDayCol(date, index)) }
+        </div>
+      </div>
+    );
+  }
+}

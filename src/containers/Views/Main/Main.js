@@ -4,21 +4,22 @@ import { connect } from 'react-redux';
 // import DatePicker from 'material-ui/DatePicker';
 // import RaisedButton from 'material-ui/RaisedButton';
 // import getBookedDates from './getBookedDates';
-import Paper from 'material-ui/Paper';
+// import Paper from 'material-ui/Paper';
 
 import './main.scss';
 
 import {
-  getDates,
+  // getDates,
   loadEvents
 } from '../../../redux/reducers/Calendar/calendar';
 
 import {
-  Cabin,
-  Calendar,
   View
 } from '../../../components';
 
+import {
+  Calendar
+} from '../../../containers';
 
 @connect(
   state => ({
@@ -28,7 +29,7 @@ import {
     time: state.info.time,
   }),
   ({
-    getDates,
+    // getDates,
     loadEvents,
   })
 )
@@ -38,7 +39,7 @@ export default class Main extends Component {
     bookings: PropTypes.object,
     cabins: PropTypes.array,
     days: PropTypes.array,
-    getDates: PropTypes.func,
+    // getDates: PropTypes.func,
     loadEvents: PropTypes.func,
     thisWeek: PropTypes.array,
     time: PropTypes.string,
@@ -49,13 +50,7 @@ export default class Main extends Component {
     title: 'Book A Cabin'
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      controlledDate: new Date(),
-      events: [],
-    }
-  }
+
 
   componentDidMount() {
     this.getEvents();
@@ -75,59 +70,17 @@ export default class Main extends Component {
     });
   }
 
-
-  handleChange = (event, date) => {
-    this.setState({
-      controlledDate: date,
-    });
-    this.getDates(date);
-  };
-
-  getDates = (date) => {
-    this.props.getDates(date, 7);
-  }
-
-  renderCabins() {
-    const {
-      cabins
-    } = this.props;
-
-    // return cabins.map((cabin, index) => <div className="cabinListItem" key={index}>{cabin.id}</div>);
-    return (
-      <Paper zDepth={0}>
-        <div className="cabinCol">
-          <div className="contentHeader"></div>
-          {cabins.map((cabin, index) => <Cabin id={cabin.id} imgs={cabin.imgs} key={index} name={cabin.name} price={cabin.price} />)}
-        </div>
-      </Paper>
-    );
-  }
-
   render() {
 
     const {
       bookings,
       cabins,
       days,
-      // thisWeek,
-      // time,
-      title
     } = this.props;
-    // const bookedDays = ['3/1/17', '4/3/17', '3/5/17', '3/6/17', '3/7/17', '3/18/17', '3/29/17'];
-    const dates = days;
-    const cabinIds = cabins.map(cabin => cabin.id);
 
-    // console.log('bookings: ', bookings);
     return (
-      <View title={title}
-            date={this.state.controlledDate}
-            onDateChange={this.handleChange}>
-        <div className="mainWrap">
-          { this.renderCabins() }
-          <div className="calendarCol">
-            <Calendar dates={dates} bookings={bookings} cabins={cabinIds} />
-          </div>
-        </div>
+      <View>
+        <Calendar dates={days} bookings={bookings} cabins={cabins} />
       </View>
     );
   }
