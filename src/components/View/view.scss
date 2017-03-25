@@ -2,16 +2,9 @@
 @import '../../style/mixins.scss';
 
 .view {
-  // @include flexBox(column, nowrap, flex-start, flex-start);
-  // height: 100%;
   width: 100%;
-  // min-height: 100%;
-  // overflow: hidden;
   flex: 1;
   @include flexBox(column, nowrap, center, flex-start);
-  background: darken($primary, 10%);
-  // overflow: hidden;
-  // overflow-y: scroll;
   position: relative;
 }
 
@@ -20,6 +13,4 @@
   max-width: 120px;
   overflow: hidden;
   height: 100%;
-  // margin-right: 10px;
-  // border: 1px solid red;
 }

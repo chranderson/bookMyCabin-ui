@@ -1,8 +1,21 @@
+const UPDATE_FORM_DATA = 'userData/UPDATE_FORM_DATA';
 const UPDATE_SELECTED = 'userData/UPDATE_SELECTED';
 
 const initialState = {
-  selected: {},
+  selected: {
+    // cabin1: ['5/17/17', '5/18/17', '5/19/17', '5/20/17', '5/21/17'],
+    // cabin2: ['5/17/17', '5/18/17', '5/19/17', '5/20/17', '5/21/17'],
+    // cabin3: ['5/17/17', '5/18/17', '5/19/17', '5/20/17', '5/21/17'],
+    // cabin4: ['5/17/17', '5/18/17', '5/19/17', '5/20/17', '5/21/17'],
+  },
   totalCharge: 0,
+  values: {
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    message: ''
+  }
 };
 
 function updateSelectedItems(currentItems, newItem) {
@@ -31,12 +44,32 @@ function updateSelectedItems(currentItems, newItem) {
 
 }
 
+
+function updateFieldValue(values, field, newValue) {
+  const fieldKeys = Object.keys(values);
+  return fieldKeys.reduce((acc, key) => {
+    const accCopy = Object.assign({}, acc);
+    if (key === field) {
+      accCopy[key] = newValue;
+    } else {
+      accCopy[key] = values[key];
+    }
+    return accCopy;
+  }, {});
+};
+
+
 export default (state = initialState, action) => {
   switch (action.type) {
+    case UPDATE_FORM_DATA:
+      const newValues = updateFieldValue(state.values, action.field, action.value);
+      return {
+        ...state,
+        values: newValues
+      };
     case UPDATE_SELECTED:
       const newSelection = updateSelectedItems(Object.assign({}, state.selected), action.item);
       const totalAmount = Object.keys(newSelection).reduce((acc, key) => acc + newSelection[key].length, 0);
-      console.log('totalAmount: ', totalAmount * 185);
       return {
         ...state,
         selected: newSelection,
@@ -51,5 +84,13 @@ export function updateSelected(item) {
   return {
     type: UPDATE_SELECTED,
     item
+  };
+}
+
+export function updateFormData(field, value) {
+  return {
+    type: UPDATE_FORM_DATA,
+    field,
+    value
   };
 }

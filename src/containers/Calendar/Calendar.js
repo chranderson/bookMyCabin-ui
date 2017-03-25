@@ -74,8 +74,8 @@ export default class Calendar extends Component {
     };
 
     return (
-      <div className="dayCol" key={indx} id={date}>
-        <div className="dayHeader">{date}</div>
+      <div className="dayCol" key={indx + date} id={date}>
+        <Paper className="dayHeader" zDepth={0}>{date.slice(0, -3)}</Paper>
         {
           cabinIds.map((cabin, index) => {
             const isSelected = selectedItems[cabin] && selectedItems[cabin].includes(date);
@@ -91,6 +91,7 @@ export default class Calendar extends Component {
             );
           })
         }
+        <div className="dayHeader">{date.slice(0, -3)}</div>
       </div>
     );
   }
@@ -105,13 +106,14 @@ export default class Calendar extends Component {
     return (
       <div className="calendar">
         <div className="cabinCol">
-          <Paper zDepth={0}>
-            <div className="cabinHeader"></div>
+          <Paper zDepth={3}>
+            <div className="cabinHeader">2017</div>
             { this.renderCabinCol() }
+            <div className="cabinHeader">2017</div>
           </Paper>
         </div>
         <div className="calendarCol">
-          { dates.map((date, index) => this.renderDayCol(date, index)) }
+          { dates && dates.map((date, index) => this.renderDayCol(date, index)) }
         </div>
       </div>
     );

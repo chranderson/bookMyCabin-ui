@@ -7,11 +7,13 @@ import {
 } from '../../components';
 
 import {
+  Confirm,
   Contact,
   Header,
   Menu,
   Main,
-  Review
+  Success,
+  // Review
 } from '../../containers';
 
 import './app.scss';
@@ -65,8 +67,10 @@ export default class App extends Component {
 
     let view;
     if (currentView === 'main') view = (<Main date={controlledDate} />);
+    if (currentView === 'confirm') view = (<Confirm />);
     if (currentView === 'contact') view = (<Contact />);
-    if (currentView === 'review') view = (<Review />);
+    if (currentView === 'review') view = (<Confirm review />);
+    if (currentView === 'success') view = (<Success />);
 
     return view;
   }

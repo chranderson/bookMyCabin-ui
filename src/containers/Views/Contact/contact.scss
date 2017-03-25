@@ -4,7 +4,41 @@
 .contactView {
   flex: 1;
   width: 100%;
-  @include flexBox(row, nowrap, center, center);
-  font-size: 2em;
+  min-height: 100%;
+  // @include flexBox(column, nowrap, center, flex-start);
   font-weight: 500;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  padding: 1em;
+
+  // @media (min-width: 768px) {
+  //   padding: 1em;
+  // }
+}
+
+.header {
+  width: 100%;
+  max-width: 600px;
+}
+.formWrap {
+  // @include flexBox(column, nowrap, flex-start, flex-start);
+  width: 100%;
+  max-width: 800px;
+  // min-height: 100%;
+  // flex: 1;
+}
+
+.formHeader {}
+
+.rowWrap {
+  width: 100%;
+  @include flexBox(row, wrap, flex-start, space-between);
+
+}
+
+.textInput {
+  height: 100%;
+  max-width: 375px;
+  // margin-bottom: 1em;
+  // border: 1px solid red;
 }

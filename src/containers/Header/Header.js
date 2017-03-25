@@ -2,12 +2,18 @@ import React, { Component, PropTypes } from 'react';
 import DatePicker from 'material-ui/DatePicker';
 import { connect } from 'react-redux';
 
+import IconButton from 'material-ui/IconButton';
+import FontIcon from 'material-ui/FontIcon';
+
+
 import './header.scss';
 
 import {
   getDates,
+  getNextDates,
+  getPrevDates,
   // loadEvents,
-  selectDate
+  // selectDate
 } from '../../redux/reducers/Calendar/calendar';
 
 @connect(
@@ -15,47 +21,68 @@ import {
     // bookings: state.calendar.bookings,
     // cabins: state.cabins,
     controlledDate: state.calendar.controlledDate,
-    // time: state.info.time,
+    currentView: state.nav.currentView,
+    total: state.userData.totalCharge,
   }),
   ({
     getDates,
+    getNextDates,
+    getPrevDates,
     // loadEvents,
-    selectDate,
+    // selectDate,
   })
 )
 export default class Header extends Component {
 
   static propTypes = {
+    currentView: PropTypes.string,
+    getDates: PropTypes.func,
+    getNextDates: PropTypes.func,
+    getPrevDates: PropTypes.func,
     controlledDate: PropTypes.any,
-    selectDate: PropTypes.func,
+    // selectDate: PropTypes.func,
     title: PropTypes.string,
+    total: PropTypes.number,
     view: PropTypes.string,
   }
 
   static defaultProps = {
     onDateChange: (evt) => console.log('onDateChange: ', evt),
-    title: 'Book A Cabin',
+    title: 'Book',
     view: 'main'
   }
 
   handleChange = (event, date) => {
-    console.log('handleChange: ', event, date);
-    this.props.selectDate(date);
     this.getDates(date);
   };
 
   getDates = (date) => {
-    this.props.getDates(date, 7);
+    this.props.getDates(date, 14);
+  }
+
+  getToday = () => new Date();
+
+  handleBackClick = () => {
+    this.props.getPrevDates();
+  }
+
+  handleNextClick = () => {
+    this.props.getNextDates();
   }
 
   render() {
 
-
     const {
       controlledDate,
+      currentView,
       title,
+      total,
       // view
     } = this.props;
+
+    const dialogContainerStyle = {
+      border: '1px solid red'
+    };
 
     return (
       <div className="appHeader">
@@ -63,11 +90,35 @@ export default class Header extends Component {
           {title}
         </div>
         <div className="toolBar">
-          <div className="datePickerWrap">
-            <DatePicker hintText={'yolo'}
-                        value={controlledDate}
-                        onChange={this.handleChange} />
-          </div>
+          {
+            currentView === 'main'
+            ? <IconButton onTouchTap={this.handleBackClick}>
+                <FontIcon className="material-icons">chevron_left</FontIcon>
+              </IconButton>
+            : null
+          }
+          {
+            currentView === 'main'
+            ? <DatePicker
+                autoOk
+                className="datePicker"
+                dialogContainerStyle={dialogContainerStyle}
+                disableYearSelection
+                hideCalendarDate
+                hintText={'yolo'}
+                locale={'en-US'}
+                minDate={this.getToday()}
+                onChange={this.handleChange}
+                value={controlledDate} />
+            : null
+          }
+          {
+            currentView === 'main'
+            ? <IconButton onTouchTap={this.handleNextClick}>
+                <FontIcon className="material-icons">chevron_right</FontIcon>
+              </IconButton>
+            : <div style={{padding: '0 1em'}}>Total: <span style={{fontWeight: 500}}>{`$${total}.00`}</span></div>
+          }
         </div>
       </div>
     );

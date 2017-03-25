@@ -59,6 +59,10 @@ export default class Day extends Component {
               ? ' disabled'
               : ' enabled';
 
+    dayStyle += selected
+              ? ' selected'
+              : '';
+
     let statusStyle = 'status';
     statusStyle += booked
                  ? ' disabled'

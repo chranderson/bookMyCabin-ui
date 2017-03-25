@@ -7,6 +7,8 @@ export Menu from './Menu/Menu';
 export Calendar from './Calendar/Calendar';
 
 // Views
+export Confirm from './Views/Confirm/Confirm';
 export Contact from './Views/Contact/Contact';
 export Main from './Views/Main/Main';
 export Review from './Views/Review/Review';
+export Success from './Views/Success/Success';

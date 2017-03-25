@@ -45,28 +45,31 @@ export default class Menu extends Component {
 
   render() {
 
-    // const {
-    //   pages
-    // } = this.props;
+    const {
+      totalCharge
+    } = this.props;
 
     return (
       <div className="menu">
-        <Paper zDepth={2}>
+        <Paper zDepth={5}>
           <BottomNavigation>
             <BottomNavigationItem
-              label="Review Dates"
+              label="Cabins"
               icon={listIcon}
-              onTouchTap={() => this.select('review')}
-            />
-            <BottomNavigationItem
-              label="Book Now"
-              icon={arrowUpIcon}
               onTouchTap={() => this.select('main')}
             />
             <BottomNavigationItem
-              label={`$${this.props.totalCharge}.00`}
-              icon={removeIcon}
+              style={{flex: '2 1 0%'}}
+              disabled={totalCharge === 0}
+              label="Reservation Request"
+              icon={arrowUpIcon}
               onTouchTap={() => this.select('contact')}
+            />
+            <BottomNavigationItem
+              disabled={totalCharge === 0}
+              label={'Review'}
+              icon={removeIcon}
+              onTouchTap={() => this.select('review')}
             />
           </BottomNavigation>
         </Paper>

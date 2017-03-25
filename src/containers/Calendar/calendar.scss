@@ -7,6 +7,7 @@
   width: 100%;
   overflow: hidden;
   overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .calHeader {
@@ -21,6 +22,7 @@
   width: 100%;
   min-height: 100%;
   overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .cabinCol {
@@ -34,29 +36,41 @@
 .dayCol {
   position: relative;
   height: 100%;
-  padding-top: 26px;
+  flex: 1;
+  // padding-top: 26px;
   // width: 80px;
   // border-right: 1px solid grey;
   // background: darken($bg, 20%);
   @include flexBox(column, nowrap, center, flex-start);
 }
 
+.isOver {
+  background: $white;
+}
+
 .cabinHeader {
+  @include flexBox(row, nowrap, center, center);
+  font-size: 0.9em;
   width: 100px;
   min-width: 100px;
   min-height: 26px;
 }
 
 .dayHeader {
-  position: absolute;
-  top: 0;
+  font-weight: 500;
+  // position: absolute;
+  // top: 0;
   @include flexBox(row, nowrap, center, center);
-  // width: 100%;
-  min-width: 80px;
-  max-width: 80px;
+  width: 100%;
+  min-width: 50px;
+  // max-width: 80px;
   // width: 80px;
   // border: 1px solid red;
   height: 26px;
   font-size: 0.8em;
   padding-top: 2px;
+
+  @media (max-width: 900px) {
+    min-width: 60px;
+  }
 }

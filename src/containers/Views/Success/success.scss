@@ -1,0 +1,36 @@
+@import '../../../style/colors.scss';
+@import '../../../style/mixins.scss';
+
+.successView {
+  max-width: 100%;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  padding: 1em;
+}
+
+.viewTitle {
+  @include flexBox(row, wrap, center, flex-start);
+  font-weight: 500;
+  margin: 1em 0;
+  font-size: 1.5em;
+  color: #1dab53;
+
+  > span {
+    margin-right: 8px;
+    font-size: 30px;
+  }
+}
+
+.nextStep {
+  @include flexBox(column, wrap, flex-start, center);
+  font-weight: 500;
+  // border: 1px solid blue;
+  > span {
+    font-size: 0.8em;
+    padding-left: 0.5em;
+    // border: 1px solid green;
+    margin-top: 5px;
+    font-weight: 300;
+  }
+  padding: 0.5em 0;
+}

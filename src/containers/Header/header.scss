@@ -7,19 +7,26 @@
   height: 50px;
   min-height: 50px;
   width: 100%;
-  padding: 0 1em;
+
   border-bottom: 1px solid darken($primary, 8%);
+
+  > .title {
+    padding: 0 1em;
+  }
 }
 
 .toolBar {
-
+  @include flexBox(row, nowrap, center, flex-end);
 }
 
-.datePickerWrap {
+.datePicker {
   @include flexBox(row, nowrap, center, flex-start);
-  max-width: 120px;
+  max-width: 90px;
   overflow: hidden;
   height: 100%;
-  // margin-right: 10px;
-  // border: 1px solid red;
+
+  > input {
+    border: none;
+  }
+
 }

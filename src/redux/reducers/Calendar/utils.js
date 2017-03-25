@@ -13,11 +13,19 @@ export function getWeek(start) {
    return week;
 };
 
-export function getDays(start, count) {
+export function getDays(start, count, type) {
    let days = [];
    for (let index = 0; index < count; index++) {
-     const date = start ? new Date(start) : new Date();
-     days.push(formatDate(date.setDate(date.getDate() + index)));
+     const date = new Date(start);
+     let thisDate;
+     if (type === 'previous') {
+       thisDate = (date.getDate() - (index + 1));
+     } else if (type === 'now') {
+       thisDate = (date.getDate() + index);
+     } else if (type === 'future') {
+       thisDate = (date.getDate() + (index + 1));
+     }
+     days.push(formatDate(date.setDate(thisDate)));
    }
    return days;
 };
@@ -63,3 +71,16 @@ export function getBookedDates(dateRanges) {
 
   return parsedCalendar.booked;
 }
+
+
+export function getUpdatedBookings(cabinId, dates, bookings) {
+  return Object.keys(bookings).reduce((acc, key) => {
+    const accCopy = Object.assign({}, acc);
+    if (key === cabinId) {
+      accCopy[key] = dates
+    } else {
+      accCopy[key] = bookings[key];
+    }
+    return accCopy;
+  }, {});
+};

@@ -1,0 +1,106 @@
+@import '../../../style/colors.scss';
+@import '../../../style/mixins.scss';
+
+.confirmView {
+  max-width: 100%;
+  font-weight: 500;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+.header {
+  @include flexBox(row, nowrap, center, flex-start);
+  min-height: 50px;
+  min-width: 100%;
+  padding: 0 1em;
+}
+
+.detailsWrap {
+  @include flexBox(column, nowrap, flex-start, flex-start);
+}
+
+.userDetails {
+  flex: 1;
+  padding: 1em;
+  @include flexBox(column, nowrap, flex-start, flex-start);
+  width: 100%;
+}
+
+
+.reservationDetails {
+  width: 100%;
+  padding: 1em;
+  padding-bottom: 0;
+  @include flexBox(column, nowrap, flex-start, flex-start);
+}
+
+.cabinDetail, .savedDates {
+  @include flexBox(column, nowrap, flex-start, flex-start);
+}
+
+.cabinDetail {
+  flex: 1;
+  padding: 1em;
+  // margin: 1em;
+  margin-bottom: 1em;
+  width: 100%;
+  // flex-basis: 325px;
+
+  // &:last-of-type {
+  //   margin-bottom: 0;
+  // }
+}
+
+.detailTitle {
+  @include flexBox(row, nowrap, center, space-between);
+  // height: 60px;
+  border-bottom: 1px solid grey;
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+.datesList, .aboutCabin {
+  font-weight: 300;
+  @include flexBox(row, wrap, flex-start, flex-start);
+}
+
+.aboutCabin {
+  // font-size: 0.5em;
+}
+
+.datesList {
+  > span {
+    margin: 4px;
+  }
+}
+
+.confirmTotal {
+  @include flexBox(column, nowrap, flex-start, flex-start);
+  padding: 1em 2em;
+}
+
+.info {
+  // line-height: 1.6;
+  // font-size: 0.8em;
+  @include flexBox(column, nowrap, flex-start, flex-start);
+  padding: 1em 2em;
+  font-weight: 300;
+  // font-size: 0.75em;
+}
+
+.total {
+  font-weight: 500;
+  > span {
+    opacity: 0.8;
+  }
+}
+
+.keySpan {
+  font-weight: 400;
+  font-size: 0.8em;
+  margin-right: 1em;
+}
+
+.confirmBtnWrap {
+  padding: 1em;
+}

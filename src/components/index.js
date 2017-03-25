@@ -7,3 +7,5 @@ export View from './View/View';
 
 export Cabin from './Cabin/Cabin';
 export Day from './Day/Day';
+
+export OccupancySelectField from './OccupancySelectField/OccupancySelectField';

@@ -7,6 +7,7 @@
   width: 100%;
   // overflow: hidden;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   @include flexBox(column, nowrap, flex-start, flex-start);
   padding: 1em;
 }
