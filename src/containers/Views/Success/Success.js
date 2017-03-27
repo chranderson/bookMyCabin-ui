@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import FontIcon from 'material-ui/FontIcon';
 // import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
+// import RaisedButton from 'material-ui/RaisedButton';
 import './success.scss';
 
 import {
@@ -14,6 +14,10 @@ import {
 import {
   updateView,
 } from '../../../redux/reducers/Nav/nav';
+
+// import {
+//   sendEmail,
+// } from '../../../redux/reducers/UserData/userData';
 
 
 const iconStyle = {
@@ -30,6 +34,7 @@ const checkIcon = <FontIcon className="material-icons" style={iconStyle}>check</
     // values: state.userData.values,
   }),
   ({
+    // sendEmail,
     updateView,
   })
 )
@@ -37,13 +42,15 @@ const checkIcon = <FontIcon className="material-icons" style={iconStyle}>check</
 export default class Success extends Component {
 
   static propTypes = {
-    doSomethingElse: PropTypes.func,
+    // doSomethingElse: PropTypes.func,
+    sendEmail: PropTypes.func,
     updateView: PropTypes.func,
     title: PropTypes.string
   }
 
   static defaultProps = {
-    doSomethingElse: () => alert('what would you like this to do? I can take it off'),
+    // doSomethingElse: () => alert('what would you like this to do? I can take it off'),
+    sendEmail: () => console.log('sendEmail called: '),
     title: 'Reservation Sent!',
     updateView: (newView) => console.log('updateView: ', newView),
   }
@@ -73,11 +80,6 @@ export default class Success extends Component {
               Payment
               <span>How will we do payment?</span>
             </div>
-            <RaisedButton
-              label="Should I Do Something Else?"
-              onTouchTap={this.props.doSomethingElse}
-              primary={true}
-              style={{margin: '2em 0'}}  />
           </div>
         </div>
       </View>

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-
+import CircularProgress from 'material-ui/CircularProgress';
 import Paper from 'material-ui/Paper';
 
 import Chip from 'material-ui/Chip';
@@ -16,16 +16,22 @@ import {
   updateView,
 } from '../../../redux/reducers/Nav/nav';
 
+import {
+  sendEmail,
+} from '../../../redux/reducers/UserData/userData';
+
 const sampleData = require('./sampleSession.json');
 
 @connect(
   state => ({
     cabins: state.cabins,
+    loading: state.userData.loading,
     selected: state.userData.selected,
     totalCharge: state.userData.totalCharge,
     values: state.userData.values,
   }),
   ({
+    sendEmail,
     updateView,
   })
 )
@@ -35,8 +41,10 @@ export default class Contact extends Component {
   static propTypes = {
     cabins: PropTypes.array,
     cabinPrice: PropTypes.number,
+    loading: PropTypes.bool,
     review: PropTypes.bool,
     selected: PropTypes.object,
+    sendEmail: PropTypes.func,
     totalCharge: PropTypes.number,
     updateView: PropTypes.func,
     values: PropTypes.object,
@@ -45,6 +53,7 @@ export default class Contact extends Component {
 
   static defaultProps = {
     cabinPrice: 185,
+    loading: false,
     review: false,
     title: 'Please Review the Information',
     updateView: (newView) => console.log('updateView: ', newView),
@@ -68,7 +77,7 @@ export default class Contact extends Component {
       newView = 'contact';
       this.props.updateView(newView);
     } else {
-      this.sendEmail();
+      this.sendEmail(sampleData);
     }
 
   };
@@ -124,32 +133,32 @@ export default class Contact extends Component {
     })
   }
 
-  sendEmail = () => {
-    // const {
-    //   values
-    // } = this.props;
-    // const emailUrl = `https://odn75i78e8.execute-api.us-west-2.amazonaws.com/prod/message?email="${values.email}"&name="${values.firstName} ${values.lastName}"&startDate=1487732127257&endDate=1487732129814&message="${values.message}"&subject="Cabin Booking"&phone="${values.phone}"`;
-    const emailUrl = `https://odn75i78e8.execute-api.us-west-2.amazonaws.com/prod/message`;
-
-    fetch(emailUrl, {
-      mode: 'no-cors',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
-      body: JSON.stringify(sampleData),
-    })
-    .then(response => {
-      console.log('response: ', response);
-      this.props.updateView('success');
-    })
-    .catch(err => console.log('err: ', err));
+  sendEmail = (sessionData) => {
+    // console.log('sessionData: ', sessionData);
+    this.props.sendEmail(sessionData)
+      .then(res => {
+        // console.log('res: ', res.result);
+        if (res.result.emailSent) {
+          this.props.updateView('success');
+        } else if (res.result.error) {
+          // console.log('res.error: ', res.error);
+        }
+      })
+      .catch(err => console.log('err: ', err));
   }
 
+
+  renderLoading() {
+    return (
+      <div style={{display: 'flex', height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center'}}>
+        <CircularProgress size={80} thickness={5} />
+      </div>
+    );
+  }
   render() {
 
     const {
+      loading,
       review,
       // title,
       totalCharge,
@@ -160,59 +169,64 @@ export default class Contact extends Component {
 
     return (
       <View>
-        <div className="confirmView">
-          <div className="info">
-            <span><strong>{ review ? 'Selected Dates:' : 'Please review selected dates and info:' }</strong></span>
-            {
-              !review
-              ? <div className="userDetails">
-                  <span><span className="keySpan">Name:</span>{`${values.firstName} ${values.lastName}`}</span>
-                  <span><span className="keySpan">Email:</span>{`${values.email}`}</span>
-                  <span><span className="keySpan">Phone:</span>{`${values.phone}`}</span>
-                  <span><span className="keySpan">Message:</span>{`${values.message}`}</span>
-                </div>
-              : null
-            }
-            <ul>
-              <li>All cabins are <strong>$185</strong> plus tax per night based on double occupancy.</li>
-              <li>Each additional person is <strong>$25</strong> per night.</li>
-            </ul>
-          </div>
-          <div className="detailsWrap">
-            <div className="reservationDetails">
-              { this.renderCabinDetails() }
+        {
+          !loading
+          ? <div className="confirmView">
+            <div className="info">
+              <span><strong>{ review ? 'Selected Dates:' : 'Please review selected dates and info:' }</strong></span>
+              {
+                !review
+                ? <div className="userDetails">
+                    <span><span className="keySpan">Name:</span>{`${values.firstName} ${values.lastName}`}</span>
+                    <span><span className="keySpan">Email:</span>{`${values.email}`}</span>
+                    <span><span className="keySpan">Phone:</span>{`${values.phone}`}</span>
+                    <span><span className="keySpan">Message:</span>{`${values.message}`}</span>
+                  </div>
+                : null
+              }
+              <ul>
+                <li>All cabins are <strong>$185</strong> plus tax per night based on double occupancy.</li>
+                <li>Each additional person is <strong>$25</strong> per night.</li>
+              </ul>
+            </div>
+            <div className="detailsWrap">
+              <div className="reservationDetails">
+                { this.renderCabinDetails() }
+              </div>
+            </div>
+
+            <div className="info">
+              <span><strong>A Few Things</strong></span>
+              <ul>
+                <li>50% deposit is required to confirm a reservation</li>
+                <li>Payment in full is due 30 days prior to arrival</li>
+              </ul>
+            </div>
+            <div className="info">
+              <span><strong>Cancellation Policy</strong></span>
+              <ul>
+                <li>To receive a refund of your deposit, less a 5% booking fee, you must give written notice more than 60 days prior to arrival.</li>
+                <li>No refund is given on cancellations less than 30 days prior to your reservation.</li>
+                <li>No partial refunds will be issued for late arrival or early departure.</li>
+              </ul>
+
+            </div>
+
+            <div className="confirmTotal">
+              <span className="tax"><span className="keySpan">{'Net:'}</span>${totalCharge}.00</span>
+              <span className="tax"><span className="keySpan">{'Tax (3%):'}</span>{this.getTax(totalCharge)}</span>
+              <span className="total">
+                <span>Total: </span>
+                {`$${this.getGrandTotal(totalCharge)}`}
+              </span>
+            </div>
+            <div className="confirmBtnWrap">
+              <RaisedButton label="Request Reservation" onTouchTap={this.handleSubmit} primary={true} fullWidth />
             </div>
           </div>
+          : this.renderLoading()
+        }
 
-          <div className="info">
-            <span><strong>A Few Things</strong></span>
-            <ul>
-              <li>50% deposit is required to confirm a reservation</li>
-              <li>Payment in full is due 30 days prior to arrival</li>
-            </ul>
-          </div>
-          <div className="info">
-            <span><strong>Cancellation Policy</strong></span>
-            <ul>
-              <li>To receive a refund of your deposit, less a 5% booking fee, you must give written notice more than 60 days prior to arrival.</li>
-              <li>No refund is given on cancellations less than 30 days prior to your reservation.</li>
-              <li>No partial refunds will be issued for late arrival or early departure.</li>
-            </ul>
-
-          </div>
-
-          <div className="confirmTotal">
-            <span className="tax"><span className="keySpan">{'Net:'}</span>${totalCharge}.00</span>
-            <span className="tax"><span className="keySpan">{'Tax (3%):'}</span>{this.getTax(totalCharge)}</span>
-            <span className="total">
-              <span>Total: </span>
-              {`$${this.getGrandTotal(totalCharge)}`}
-            </span>
-          </div>
-          <div className="confirmBtnWrap">
-            <RaisedButton label="Request Reservation" onTouchTap={this.handleSubmit} primary={true} fullWidth />
-          </div>
-        </div>
       </View>
     );
   }

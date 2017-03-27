@@ -1,7 +1,14 @@
+const sampleData = require('./sampleSession.json');
+
 const UPDATE_FORM_DATA = 'userData/UPDATE_FORM_DATA';
 const UPDATE_SELECTED = 'userData/UPDATE_SELECTED';
 
+const SEND_EMAIL = 'userData/SEND_EMAIL';
+const SEND_EMAIL_SUCCESS = 'userData/SEND_EMAIL_SUCCESS';
+const SEND_EMAIL_FAIL = 'userData/SEND_EMAIL_FAIL';
+
 const initialState = {
+  loading: false,
   selected: {
     // cabin1: ['5/17/17', '5/18/17', '5/19/17', '5/20/17', '5/21/17'],
     // cabin2: ['5/17/17', '5/18/17', '5/19/17', '5/20/17', '5/21/17'],
@@ -75,6 +82,24 @@ export default (state = initialState, action) => {
         selected: newSelection,
         totalCharge: (totalAmount * 185)
       };
+    case SEND_EMAIL:
+      console.log('SEND_EMAIL: ', action);
+      return {
+        ...state,
+        loading: true,
+      };
+    case SEND_EMAIL_SUCCESS:
+      console.log('SEND_EMAIL_SUCCESS: ', action);
+      return {
+        ...state,
+        loading: false,
+      };
+    case SEND_EMAIL_FAIL:
+      console.log('SEND_EMAIL_FAIL: ', action);
+      return {
+        ...state,
+        loading: false,
+      };
     default:
       return state;
   }
@@ -92,5 +117,13 @@ export function updateFormData(field, value) {
     type: UPDATE_FORM_DATA,
     field,
     value
+  };
+}
+
+export function sendEmail(sessionData) {
+  const url = 'https://odn75i78e8.execute-api.us-west-2.amazonaws.com/prod/message';
+  return {
+    types: [SEND_EMAIL, SEND_EMAIL_SUCCESS, SEND_EMAIL_FAIL],
+    promise: (client) => client.post(url, { data: sampleData }),
   };
 }
