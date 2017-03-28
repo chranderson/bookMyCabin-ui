@@ -1,7 +1,14 @@
 const sampleData = require('./sampleSession.json');
+import {
+  updateCabinDates,
+  updateCabinGuests,
+} from './updateReservation';
+
+const UPDATE_CABIN_DATES = 'userData/UPDATE_CABIN_DATES';
+const UPDATE_GUEST_COUNT = 'userData/UPDATE_GUEST_COUNT';
 
 const UPDATE_FORM_DATA = 'userData/UPDATE_FORM_DATA';
-const UPDATE_SELECTED = 'userData/UPDATE_SELECTED';
+// const UPDATE_SELECTED = 'userData/UPDATE_SELECTED';
 
 const SEND_EMAIL = 'userData/SEND_EMAIL';
 const SEND_EMAIL_SUCCESS = 'userData/SEND_EMAIL_SUCCESS';
@@ -9,12 +16,6 @@ const SEND_EMAIL_FAIL = 'userData/SEND_EMAIL_FAIL';
 
 const initialState = {
   loading: false,
-  selected: {
-    // cabin1: ['5/17/17', '5/18/17', '5/19/17', '5/20/17', '5/21/17'],
-    // cabin2: ['5/17/17', '5/18/17', '5/19/17', '5/20/17', '5/21/17'],
-    // cabin3: ['5/17/17', '5/18/17', '5/19/17', '5/20/17', '5/21/17'],
-    // cabin4: ['5/17/17', '5/18/17', '5/19/17', '5/20/17', '5/21/17'],
-  },
   totalCharge: 0,
   values: {
     firstName: '',
@@ -22,35 +23,17 @@ const initialState = {
     email: '',
     phone: '',
     message: ''
+  },
+  reservation: {
+    cabins: sampleData.cabins,
+    user: sampleData.user
+  },
+  priceConfig: {
+    baseGuestCount: 2,
+    extraGuestFee: 25,
+    taxRate: 0.03
   }
 };
-
-function updateSelectedItems(currentItems, newItem) {
-  const selectedKeys = Object.keys(currentItems);
-  const updatedKeys = selectedKeys.includes(newItem.cabinId)
-                    ? selectedKeys
-                    : [...selectedKeys, newItem.cabinId];
-
-  return updatedKeys.reduce((acc, key) => {
-    const accCopy = Object.assign({}, acc);
-
-    if (key === newItem.cabinId) {
-      const thisCabin = currentItems[key] || [];
-      accCopy[key] = !thisCabin.length
-                   ? [ newItem.date ] // if cabin dates arr has no dates, create arr with date
-                   : thisCabin.includes(newItem.date) // if it has dates, check if it has input date
-                     ? thisCabin.filter(date => date !== newItem.date) // if it has input date, remove it
-                     : [...thisCabin, newItem.date] // if it does not have input date, add it
-
-    } else {
-      accCopy[key] = currentItems[key]; // add cabinId key and attach previous cabin dates
-    }
-
-    return accCopy;
-  }, {});
-
-}
-
 
 function updateFieldValue(values, field, newValue) {
   const fieldKeys = Object.keys(values);
@@ -74,14 +57,19 @@ export default (state = initialState, action) => {
         ...state,
         values: newValues
       };
-    case UPDATE_SELECTED:
-      const newSelection = updateSelectedItems(Object.assign({}, state.selected), action.item);
-      const totalAmount = Object.keys(newSelection).reduce((acc, key) => acc + newSelection[key].length, 0);
+    case UPDATE_CABIN_DATES:
+      const reservationCopy = Object.assign({}, state.reservation);
+      const newReservation = updateCabinDates(reservationCopy, action.item);
       return {
         ...state,
-        selected: newSelection,
-        totalCharge: (totalAmount * 185)
+        reservation: newReservation,
       };
+    case UPDATE_GUEST_COUNT:
+      return {
+        ...state,
+        reservation: updateCabinGuests(Object.assign({}, state.reservation), action.item),
+      };
+
     case SEND_EMAIL:
       console.log('SEND_EMAIL: ', action);
       return {
@@ -105,9 +93,16 @@ export default (state = initialState, action) => {
   }
 };
 
-export function updateSelected(item) {
+export function updateSavedDates(item) {
   return {
-    type: UPDATE_SELECTED,
+    type: UPDATE_CABIN_DATES,
+    item
+  };
+}
+
+export function updateGuestCount(item) {
+  return {
+    type: UPDATE_GUEST_COUNT,
     item
   };
 }

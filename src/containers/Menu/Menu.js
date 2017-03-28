@@ -20,7 +20,7 @@ import {
 @connect(
   state => ({
     currentView: state.nav.currentView,
-    totalCharge: state.userData.totalCharge,
+    reservation: state.userData.reservation,
   }),
   ({
     updateView,
@@ -32,7 +32,6 @@ export default class Menu extends Component {
 
   static propTypes = {
     currentView: PropTypes.string,
-    totalCharge: PropTypes.number,
     updateView: PropTypes.func,
   }
   static defaultProps = {
@@ -46,9 +45,10 @@ export default class Menu extends Component {
   render() {
 
     const {
-      totalCharge
+      reservation,
     } = this.props;
 
+    const hasCabinSaved = Object.keys(reservation.cabins).length > 0;
     return (
       <div className="menu">
         <Paper zDepth={5}>
@@ -60,13 +60,13 @@ export default class Menu extends Component {
             />
             <BottomNavigationItem
               style={{flex: '2 1 0%'}}
-              disabled={totalCharge === 0}
+              disabled={!hasCabinSaved}
               label="Reservation Request"
               icon={arrowUpIcon}
               onTouchTap={() => this.select('contact')}
             />
             <BottomNavigationItem
-              disabled={totalCharge === 0}
+              disabled={!hasCabinSaved}
               label={'Review'}
               icon={removeIcon}
               onTouchTap={() => this.select('review')}

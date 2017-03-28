@@ -8,6 +8,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import './confirm.scss';
 
 import {
+  getCabinTotals
+} from '../../utils/maths';
+
+import {
   OccupancySelectField,
   View
 } from '../../../components';
@@ -18,45 +22,50 @@ import {
 
 import {
   sendEmail,
+  updateGuestCount,
 } from '../../../redux/reducers/UserData/userData';
 
-const sampleData = require('./sampleSession.json');
+// const sampleData = require('./sampleSession.json');
 
 @connect(
   state => ({
     cabins: state.cabins,
     loading: state.userData.loading,
-    selected: state.userData.selected,
-    totalCharge: state.userData.totalCharge,
+    priceConfig: state.userData.priceConfig,
+    reservation: state.userData.reservation,
     values: state.userData.values,
   }),
   ({
     sendEmail,
+    updateGuestCount,
     updateView,
   })
 )
 
-export default class Contact extends Component {
+export default class Confirm extends Component {
 
   static propTypes = {
     cabins: PropTypes.array,
-    cabinPrice: PropTypes.number,
+    // cabinPrice: PropTypes.number,
     loading: PropTypes.bool,
+    priceConfig: PropTypes.object,
     review: PropTypes.bool,
-    selected: PropTypes.object,
+    // selected: PropTypes.object,
     sendEmail: PropTypes.func,
-    totalCharge: PropTypes.number,
+    // totalCharge: PropTypes.number,
+    updateGuestCount: PropTypes.func,
     updateView: PropTypes.func,
     values: PropTypes.object,
     title: PropTypes.string
   }
 
   static defaultProps = {
-    cabinPrice: 185,
+    // cabinPrice: 185,
     loading: false,
     review: false,
     title: 'Please Review the Information',
     updateView: (newView) => console.log('updateView: ', newView),
+    updateGuestCount: (cabin, count) => console.log('updateGuestCount: ', cabin, count),
   }
 
   getTax = (total) => {
@@ -77,16 +86,16 @@ export default class Contact extends Component {
       newView = 'contact';
       this.props.updateView(newView);
     } else {
-      this.sendEmail(sampleData);
+      this.sendEmail();
     }
 
   };
 
-  renderCabinDetails() {
+  renderCabinDetails(cabinFees) {
     const {
-      cabinPrice,
       cabins,
-      selected,
+      reservation,
+      // selected,
       // totalCharge
     } = this.props;
 
@@ -95,26 +104,40 @@ export default class Contact extends Component {
       fontSize: 10
     };
 
-    const savedCabins = Object.keys(selected);
-
+    // console.log('cabinFees: ', cabinFees);
+    const reservedCabins = reservation.cabins;
+    const savedCabins = Object.keys(reservation.cabins);
+    // console.log('savedCabins: ', savedCabins);
+    // console.log('cabins: ', cabins);
     return savedCabins.map((savedCabin, index) => {
+
       const thisCabin = cabins.filter(cabin => cabin.id === savedCabin)[0];
-      const savedDates = selected[savedCabin].sort((itemA, itemB) => itemA < itemB ? -1 : 1);
+      // console.log('thisCabin: ', thisCabin);
+      const savedDates = reservedCabins[savedCabin].dates.sort((itemA, itemB) => itemA < itemB ? -1 : 1);
+      const guestCount = reservedCabins[savedCabin].guests;
       const lastDay = savedDates[savedDates.length - 1];
       const lastDate = new Date(lastDay);
       const checkoutDate = new Date(lastDate.setDate((lastDate.getDate() + 1)));
-      console.log('checkoutDate: ', checkoutDate.toLocaleDateString());
+
+      const cabinTotalPrice = cabinFees[savedCabin].total;
+      // console.log('checkoutDate: ', checkoutDate.toLocaleDateString());
       return (
         <Paper className="cabinDetail" key={index} zDepth={1}>
           <div className="detailTitle">
             <span>{ thisCabin.name }</span>
-            <span>{`$${savedDates.length * cabinPrice}.00`}</span>
+            <span>{`$${cabinTotalPrice}.00`}</span>
           </div>
           <div className="aboutCabin">
             <Chip style={chipStyle}>{`Sleeps: ${thisCabin.sleeps}`}</Chip>
             <Chip style={chipStyle}>{`Price: $${thisCabin.price}`}</Chip>
           </div>
-          <OccupancySelectField options={thisCabin.sleeps} />
+
+          <OccupancySelectField
+            defaultValue={guestCount}
+            id={thisCabin.id}
+            onChange={this.updateGuestCount}
+            options={thisCabin.sleeps} />
+
           <div className="savedDates">
             <span>{`Reserve the Night${savedDates.length > 1 ? 's' : ''} of:`}</span>
             <div className="datesList">
@@ -133,9 +156,30 @@ export default class Contact extends Component {
     })
   }
 
-  sendEmail = (sessionData) => {
+  sendEmail = () => {
+
+    const {
+      cabins,
+      priceConfig,
+      reservation,
+      values,
+    } = this.props;
+
+    const payload = {
+      user: {
+        name: `${values.firstName} ${values.lastname}`,
+        email: values.email,
+        phone: values.phone,
+        message: values.message
+      },
+      cabins: reservation.cabins,
+      fees: getCabinTotals(reservation, cabins, priceConfig)
+    };
+
+    console.log('payload: ', payload);
+
     // console.log('sessionData: ', sessionData);
-    this.props.sendEmail(sessionData)
+    this.props.sendEmail(payload)
       .then(res => {
         // console.log('res: ', res.result);
         if (res.result.emailSent) {
@@ -147,6 +191,13 @@ export default class Contact extends Component {
       .catch(err => console.log('err: ', err));
   }
 
+  updateGuestCount = (cabin, count) => {
+    const payload = {
+      cabinId: cabin,
+      count: count
+    };
+    this.props.updateGuestCount(payload);
+  }
 
   renderLoading() {
     return (
@@ -155,16 +206,20 @@ export default class Contact extends Component {
       </div>
     );
   }
+
   render() {
 
     const {
       loading,
+      priceConfig,
       review,
-      // title,
-      totalCharge,
-      values
+      values,
+
+      cabins,
+      reservation,
     } = this.props;
 
+    const cabinFees = getCabinTotals(reservation, cabins, priceConfig);
     // const btnStyle = {margin: '1em'};
 
     return (
@@ -191,7 +246,7 @@ export default class Contact extends Component {
             </div>
             <div className="detailsWrap">
               <div className="reservationDetails">
-                { this.renderCabinDetails() }
+                { this.renderCabinDetails(cabinFees.cabins) }
               </div>
             </div>
 
@@ -213,11 +268,11 @@ export default class Contact extends Component {
             </div>
 
             <div className="confirmTotal">
-              <span className="tax"><span className="keySpan">{'Net:'}</span>${totalCharge}.00</span>
-              <span className="tax"><span className="keySpan">{'Tax (3%):'}</span>{this.getTax(totalCharge)}</span>
+              <span className="tax"><span className="keySpan">{'Net:'}</span>${cabinFees.total}.00</span>
+              <span className="tax"><span className="keySpan">{'Tax (3%):'}</span>{cabinFees.tax}</span>
               <span className="total">
                 <span>Total: </span>
-                {`$${this.getGrandTotal(totalCharge)}`}
+                {cabinFees.totalWithTax}
               </span>
             </div>
             <div className="confirmBtnWrap">

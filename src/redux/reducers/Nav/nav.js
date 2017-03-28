@@ -1,7 +1,7 @@
 const UPDATE_VIEW = 'nav/UPDATE_VIEW';
 
 const initialState = {
-  currentView: 'success',
+  currentView: 'main',
   views: ['main', 'confirm', 'contact', 'submit', 'success']
 };
 

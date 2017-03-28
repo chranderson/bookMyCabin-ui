@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 
 import {
-  updateSelected,
+  // updateSelected,
+  updateSavedDates,
   // removeItem
 } from '../../redux/reducers/UserData/userData';
 
@@ -18,16 +19,18 @@ import {
 
 @connect(
   state => ({
+    reservation: state.userData.reservation,
     selectedItems: state.userData.selected,
   }),
   ({
-    updateSelected,
+    updateSavedDates,
   })
 )
 export default class Calendar extends Component {
 
   static propTypes = {
-    updateSelected: PropTypes.func,
+    updateSavedDates: PropTypes.func,
+    reservation: PropTypes.object,
     selectedItems: PropTypes.object,
     cabins: PropTypes.array,
     dates: PropTypes.array,
@@ -41,7 +44,7 @@ export default class Calendar extends Component {
   }
 
   handleDateSelect = (item) => {
-    this.props.updateSelected(item);
+    this.props.updateSavedDates(item);
   }
 
   renderCabinCol() {
@@ -61,10 +64,9 @@ export default class Calendar extends Component {
   renderDayCol(date, indx) {
     const {
       cabins,
-      // dates,
       bookings,
       price,
-      selectedItems
+      reservation,
     } = this.props;
 
     const cabinIds = cabins.map(cabin => cabin.id);
@@ -73,13 +75,13 @@ export default class Calendar extends Component {
       return bookings[cabinId].some(today => today === day);
     };
 
+    // console.log('reservation: ', reservation);
     return (
       <div className="dayCol" key={indx + date} id={date}>
         <Paper className="dayHeader" zDepth={0}>{date.slice(0, -3)}</Paper>
         {
           cabinIds.map((cabin, index) => {
-            const isSelected = selectedItems[cabin] && selectedItems[cabin].includes(date);
-
+            const isSelected = reservation.cabins[cabin] && reservation.cabins[cabin].dates.includes(date);
             return (
               <Day cabinId={cabin}
                    date={date}

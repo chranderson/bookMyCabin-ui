@@ -1,31 +1,9 @@
 {
-    "user": {
-      "name": "c-buoy",
-      "email": "chrandersun@gmail.com",
-      "phone": "720-400-2738",
-      "message": "this is a sample message"
-    },
-    "reservation": {
-      "cabins": {
-        "cabin1": {
-          "dates": [
-            "06/01/2017",
-            "06/02/2017"
-          ],
-          "guests": 2,
-          "price": {
-            "base": 360,
-            "extra": 0,
-            "tax": 20.23,
-            "total": 380.23
-          }
-        }
-      },
-      "price": {
-        "base": 770,
-        "extra": 0,
-        "tax": 20.23,
-        "total": 380.23
-      }
-    }
+  "user": {
+    "name": "c-buoy",
+    "email": "chrandersun@gmail.com",
+    "phone": "720-400-2738",
+    "message": "this is a sample message"
+  },
+  "cabins": {}
 }
