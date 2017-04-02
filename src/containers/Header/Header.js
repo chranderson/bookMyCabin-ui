@@ -15,26 +15,21 @@ import {
   getDates,
   getNextDates,
   getPrevDates,
-  // loadEvents,
-  // selectDate
 } from '../../redux/reducers/Calendar/calendar';
 
 @connect(
   state => ({
-    // bookings: state.calendar.bookings,
     cabins: state.cabins,
     controlledDate: state.calendar.controlledDate,
     priceConfig: state.userData.priceConfig,
     currentView: state.nav.currentView,
-    reservation: state.userData.reservation,
+    reservation: state.userData.context.reservation,
     total: state.userData.totalCharge,
   }),
   ({
     getDates,
     getNextDates,
     getPrevDates,
-    // loadEvents,
-    // selectDate,
   })
 )
 export default class Header extends Component {
@@ -56,9 +51,12 @@ export default class Header extends Component {
 
   static defaultProps = {
     onDateChange: (evt) => console.log('onDateChange: ', evt),
-    title: 'Book',
+    title: 'B',
     view: 'main'
   }
+
+
+  formatDate = (thing) => `${thing.toDateString().slice(4, -5)}`;
 
   handleChange = (event, date) => {
     this.getDates(date);
@@ -78,6 +76,8 @@ export default class Header extends Component {
     this.props.getNextDates();
   }
 
+
+
   render() {
 
     const {
@@ -87,50 +87,70 @@ export default class Header extends Component {
       priceConfig,
       reservation,
       title,
-      // total,
-      // view
     } = this.props;
 
     const dialogContainerStyle = {
       border: '1px solid red'
     };
-
+    const buttonStyle = {
+      borderLeft: '1px dotted black',
+    };
+    const dateIconStyle = {
+      transform: 'translateX(-100%)',
+      opacity: 0.3,
+      fontSize: 20,
+    };
+    const datePickerStyle = {
+      fontFamily: 'monospace',
+      opacity: 0.8,
+      // fontWeight: 500,
+      // fontSize: 20,
+    };
     const totalFees = getCabinTotals(reservation, cabins, priceConfig);
-
     return (
       <div className="appHeader">
-        <div className="title">
+        <div className="appHeaderTitle">
           {title}
         </div>
         <div className="toolBar">
           {
             currentView === 'main'
-            ? <IconButton onTouchTap={this.handleBackClick}>
+            ? <IconButton onTouchTap={this.handleBackClick} tooltip={'previous fortnight'} className="backBtn">
                 <FontIcon className="material-icons">chevron_left</FontIcon>
               </IconButton>
             : null
           }
           {
             currentView === 'main'
-            ? <DatePicker
-                autoOk
-                className="datePicker"
-                dialogContainerStyle={dialogContainerStyle}
-                disableYearSelection
-                hideCalendarDate
-                hintText={'yolo'}
-                locale={'en-US'}
-                minDate={this.getToday()}
-                onChange={this.handleChange}
-                value={controlledDate} />
-            : null
+            ? <div className="datePickerWrapper">
+                <DatePicker
+                      autoOk
+                      className="datePicker"
+                      formatDate={this.formatDate}
+                      textFieldStyle={datePickerStyle}
+                      dialogContainerStyle={dialogContainerStyle}
+                      disableYearSelection
+                      hideCalendarDate={false}
+                      hintText=""
+                      locale={'en-US'}
+                      minDate={this.getToday()}
+                      onChange={this.handleChange}
+                      value={controlledDate} />
+                <FontIcon className="material-icons" style={dateIconStyle}>date_range</FontIcon>
+              </div>
+          : null
           }
+
           {
             currentView === 'main'
-            ? <IconButton onTouchTap={this.handleNextClick}>
+            ? <IconButton onTouchTap={this.handleNextClick} style={{buttonStyle}} tooltip={'next fortnight'} className="backBtn">
                 <FontIcon className="material-icons">chevron_right</FontIcon>
               </IconButton>
-            : <div style={{padding: '0 1em'}}>Total: <span style={{fontWeight: 500}}>{`$${totalFees.total}.00`}</span></div>
+            : <div className="headerTotal">
+                <span className="totalLabel">Total:</span>
+                <span style={{fontWeight: 500}}>${totalFees.total}</span>
+                <span className="totalChange">.{`${totalFees.total.toFixed(2).slice(-2)}`}</span>
+              </div>
           }
         </div>
       </div>

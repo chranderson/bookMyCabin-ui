@@ -7,6 +7,8 @@ import Chip from 'material-ui/Chip';
 import RaisedButton from 'material-ui/RaisedButton';
 import './confirm.scss';
 
+import createCabinPayload from './createCabinPayload';
+
 import {
   getCabinTotals
 } from '../../utils/maths';
@@ -25,14 +27,12 @@ import {
   updateGuestCount,
 } from '../../../redux/reducers/UserData/userData';
 
-// const sampleData = require('./sampleSession.json');
-
 @connect(
   state => ({
     cabins: state.cabins,
     loading: state.userData.loading,
     priceConfig: state.userData.priceConfig,
-    reservation: state.userData.reservation,
+    reservation: state.userData.context.reservation,
     values: state.userData.values,
   }),
   ({
@@ -46,13 +46,10 @@ export default class Confirm extends Component {
 
   static propTypes = {
     cabins: PropTypes.array,
-    // cabinPrice: PropTypes.number,
     loading: PropTypes.bool,
     priceConfig: PropTypes.object,
     review: PropTypes.bool,
-    // selected: PropTypes.object,
     sendEmail: PropTypes.func,
-    // totalCharge: PropTypes.number,
     updateGuestCount: PropTypes.func,
     updateView: PropTypes.func,
     values: PropTypes.object,
@@ -60,7 +57,6 @@ export default class Confirm extends Component {
   }
 
   static defaultProps = {
-    // cabinPrice: 185,
     loading: false,
     review: false,
     title: 'Please Review the Information',
@@ -79,8 +75,6 @@ export default class Confirm extends Component {
   }
 
   handleSubmit = () => {
-    console.log('values submitted: ', this.props.values);
-    console.log('send make email sending call');
     let newView;
     if (this.props.review) {
       newView = 'contact';
@@ -95,8 +89,6 @@ export default class Confirm extends Component {
     const {
       cabins,
       reservation,
-      // selected,
-      // totalCharge
     } = this.props;
 
     const chipStyle = {
@@ -104,23 +96,19 @@ export default class Confirm extends Component {
       fontSize: 10
     };
 
-    // console.log('cabinFees: ', cabinFees);
     const reservedCabins = reservation.cabins;
-    const savedCabins = Object.keys(reservation.cabins);
-    // console.log('savedCabins: ', savedCabins);
-    // console.log('cabins: ', cabins);
-    return savedCabins.map((savedCabin, index) => {
+    const savedCabinIds = reservedCabins.map(rCabin => rCabin.id);
+    return savedCabinIds.map((savedCabinId, index) => {
 
-      const thisCabin = cabins.filter(cabin => cabin.id === savedCabin)[0];
-      // console.log('thisCabin: ', thisCabin);
-      const savedDates = reservedCabins[savedCabin].dates.sort((itemA, itemB) => itemA < itemB ? -1 : 1);
-      const guestCount = reservedCabins[savedCabin].guests;
+      const thisCabin = cabins.filter(cabin => cabin.id === savedCabinId)[0];
+      const thisSavedCabin = reservedCabins.filter(resCabin => resCabin.id === savedCabinId)[0];
+      const savedDates = thisSavedCabin.dates.sort((itemA, itemB) => itemA < itemB ? -1 : 1);
+      const guestCount = thisSavedCabin.guests;
       const lastDay = savedDates[savedDates.length - 1];
       const lastDate = new Date(lastDay);
       const checkoutDate = new Date(lastDate.setDate((lastDate.getDate() + 1)));
 
-      const cabinTotalPrice = cabinFees[savedCabin].total;
-      // console.log('checkoutDate: ', checkoutDate.toLocaleDateString());
+      const cabinTotalPrice = cabinFees[savedCabinId].total;
       return (
         <Paper className="cabinDetail" key={index} zDepth={1}>
           <div className="detailTitle">
@@ -165,20 +153,26 @@ export default class Confirm extends Component {
       values,
     } = this.props;
 
+    const fees = getCabinTotals(reservation, cabins, priceConfig);
+    // console.log('reservation: ', reservation);
     const payload = {
       user: {
-        name: `${values.firstName} ${values.lastname}`,
+        name: `${values.firstName} ${values.lastName}`,
         email: values.email,
         phone: values.phone,
         message: values.message
       },
-      cabins: reservation.cabins,
-      fees: getCabinTotals(reservation, cabins, priceConfig)
+      reservation: {
+        firstDay: reservation.cabins[0].dates[0],
+        cabins: createCabinPayload(reservation.cabins, fees.cabins, cabins),
+        price: {
+          total: fees.total.toFixed(2),
+          tax: fees.tax.toFixed(2),
+          totalWithTax: fees.totalWithTax.toFixed(2)
+        }
+      }
     };
 
-    console.log('payload: ', payload);
-
-    // console.log('sessionData: ', sessionData);
     this.props.sendEmail(payload)
       .then(res => {
         // console.log('res: ', res.result);
@@ -193,7 +187,7 @@ export default class Confirm extends Component {
 
   updateGuestCount = (cabin, count) => {
     const payload = {
-      cabinId: cabin,
+      id: cabin,
       count: count
     };
     this.props.updateGuestCount(payload);
@@ -201,7 +195,7 @@ export default class Confirm extends Component {
 
   renderLoading() {
     return (
-      <div style={{display: 'flex', height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center'}}>
+      <div className="loadingView">
         <CircularProgress size={80} thickness={5} />
       </div>
     );
@@ -220,6 +214,7 @@ export default class Confirm extends Component {
     } = this.props;
 
     const cabinFees = getCabinTotals(reservation, cabins, priceConfig);
+    // console.log('cabinFees: ', cabinFees);
     // const btnStyle = {margin: '1em'};
 
     return (
@@ -268,11 +263,11 @@ export default class Confirm extends Component {
             </div>
 
             <div className="confirmTotal">
-              <span className="tax"><span className="keySpan">{'Net:'}</span>${cabinFees.total}.00</span>
-              <span className="tax"><span className="keySpan">{'Tax (3%):'}</span>{cabinFees.tax}</span>
+              <span className="tax"><span className="keySpan">{'Net:'}</span>${cabinFees.total.toFixed(2)}</span>
+              <span className="tax"><span className="keySpan">{'Tax (3%):'}</span>${cabinFees.tax.toFixed(2)}</span>
               <span className="total">
                 <span>Total: </span>
-                {cabinFees.totalWithTax}
+                ${cabinFees.totalWithTax.toFixed(2)}
               </span>
             </div>
             <div className="confirmBtnWrap">

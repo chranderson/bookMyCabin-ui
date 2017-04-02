@@ -20,7 +20,7 @@ import {
 @connect(
   state => ({
     currentView: state.nav.currentView,
-    reservation: state.userData.reservation,
+    reservation: state.userData.context.reservation,
   }),
   ({
     updateView,

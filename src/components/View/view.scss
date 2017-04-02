@@ -2,10 +2,16 @@
 @import '../../style/mixins.scss';
 
 .view {
+  // border: 2px solid blue;
   width: 100%;
   flex: 1;
-  @include flexBox(column, nowrap, center, flex-start);
-  position: relative;
+  // min-height: 400px;
+  // height: 100%;
+  @include flexBox(column, nowrap, center, center);
+  // position: relative;
+  overflow: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .datePickerWrap {

@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 import './main.scss';
 
 import {
-  // getDates,
   loadEvents
 } from '../../../redux/reducers/Calendar/calendar';
 
@@ -26,10 +25,8 @@ import {
     bookings: state.calendar.bookings,
     cabins: state.cabins,
     days: state.calendar.days,
-    time: state.info.time,
   }),
   ({
-    // getDates,
     loadEvents,
   })
 )
@@ -39,10 +36,8 @@ export default class Main extends Component {
     bookings: PropTypes.object,
     cabins: PropTypes.array,
     days: PropTypes.array,
-    // getDates: PropTypes.func,
     loadEvents: PropTypes.func,
     thisWeek: PropTypes.array,
-    time: PropTypes.string,
     title: PropTypes.string
   }
 
@@ -62,7 +57,20 @@ export default class Main extends Component {
 
   getEvents = () => {
     this.props.cabins.forEach(cabin => {
-      fetch(`https://odn75i78e8.execute-api.us-west-2.amazonaws.com/prod/calendar?cabin="${cabin.id}"`)
+
+      const path = `https://odn75i78e8.execute-api.us-west-2.amazonaws.com/prod/calendar?cabin="${cabin.id}"`;
+
+      const request = new Request(path, {
+        // mode: 'cors',
+        method: 'get',
+        headers: {
+          // 'Content-Type': 'application/json',
+          // 'Access-Control-Allow-Origin': '*',
+          'x-api-key': 'uZEFnLPe7P6H3VROSEXmH4AAStOXBSNo3okUUXUd'
+        },
+      });
+
+      fetch(request)
         .then(response => response.json())
         .then(res => {
           this.props.loadEvents(res, cabin.id);

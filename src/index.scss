@@ -13,6 +13,7 @@ html, body {
 body {
   @include flexBox(row, nowrap, flex-start, center);
   @media (min-width: 600px) {
+    width: 100%;
     @include flexBox(row, nowrap, center, center);
   }
   margin: 0;

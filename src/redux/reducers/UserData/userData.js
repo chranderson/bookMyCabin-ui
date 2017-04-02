@@ -1,14 +1,12 @@
-const sampleData = require('./sampleSession.json');
-import {
-  updateCabinDates,
-  updateCabinGuests,
-} from './updateReservation';
+// const sampleData = require('./sampleSession.json');
+
+import updateCabinDates from './updateCabinDates';
+import updateCabinGuestCount from './updateCabinGuestCount';
 
 const UPDATE_CABIN_DATES = 'userData/UPDATE_CABIN_DATES';
 const UPDATE_GUEST_COUNT = 'userData/UPDATE_GUEST_COUNT';
 
 const UPDATE_FORM_DATA = 'userData/UPDATE_FORM_DATA';
-// const UPDATE_SELECTED = 'userData/UPDATE_SELECTED';
 
 const SEND_EMAIL = 'userData/SEND_EMAIL';
 const SEND_EMAIL_SUCCESS = 'userData/SEND_EMAIL_SUCCESS';
@@ -24,9 +22,20 @@ const initialState = {
     phone: '',
     message: ''
   },
-  reservation: {
-    cabins: sampleData.cabins,
-    user: sampleData.user
+  // context: {
+  //   reservation: sampleData.reservation,
+  //   user: sampleData.user
+  // },
+  context: {
+    reservation: {
+      cabins: []
+    },
+    user: {
+      name: '',
+      email: '',
+      phone: '',
+      message: ''
+    }
   },
   priceConfig: {
     baseGuestCount: 2,
@@ -58,16 +67,29 @@ export default (state = initialState, action) => {
         values: newValues
       };
     case UPDATE_CABIN_DATES:
-      const reservationCopy = Object.assign({}, state.reservation);
-      const newReservation = updateCabinDates(reservationCopy, action.item);
+      const savedCabins = state.context.reservation.cabins.slice();
+      // console.log('savedCabins: ', savedCabins);
+      const newSavedCabins = updateCabinDates(savedCabins, action.item);
+      console.log('newSavedCabins: ', newSavedCabins);
       return {
         ...state,
-        reservation: newReservation,
+        context: {
+          reservation: {
+            cabins: newSavedCabins
+          },
+          user: state.context.user
+        },
       };
     case UPDATE_GUEST_COUNT:
+      const updatedCabins = updateCabinGuestCount(state.context.reservation.cabins.slice(), action.item);
       return {
         ...state,
-        reservation: updateCabinGuests(Object.assign({}, state.reservation), action.item),
+        context: {
+          reservation: {
+            cabins: updatedCabins
+          },
+          user: state.context.user
+        }
       };
 
     case SEND_EMAIL:
@@ -119,6 +141,6 @@ export function sendEmail(sessionData) {
   const url = 'https://odn75i78e8.execute-api.us-west-2.amazonaws.com/prod/message';
   return {
     types: [SEND_EMAIL, SEND_EMAIL_SUCCESS, SEND_EMAIL_FAIL],
-    promise: (client) => client.post(url, { data: sampleData }),
+    promise: (client) => client.post(url, { data: sessionData }),
   };
 }

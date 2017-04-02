@@ -23,22 +23,25 @@ class _ApiClient {
           method: method,
         	headers: {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
+            'X-Api-Key': 'uZEFnLPe7P6H3VROSEXmH4AAStOXBSNo3okUUXUd'
         	},
           body: JSON.stringify(data)
         });
 
         // console.log('request: ', request);
         fetch(request)
-          .then(response => response.json())
-          .then(json => {
-            if (json.body.emailSent) {
-              resolve(json.body);
+          .then(response => {
+            if (!response.ok) {
+             throw Error(response.statusText);
+            }
+            // console.log('response: ', response.status);
+            if (response.status < 400) {
+              resolve(response.json());
             } else {
-              reject(json.body);
+              reject(response.json());
             }
           })
-          .catch((err) => console.log('err: ', err));
+          .catch((err) => reject(err));
       }));
   }
 }

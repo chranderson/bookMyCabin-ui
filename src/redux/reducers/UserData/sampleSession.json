@@ -1,9 +1,22 @@
 {
   "user": {
-    "name": "c-buoy",
+    "name": "Chris Anderson",
     "email": "chrandersun@gmail.com",
     "phone": "720-400-2738",
     "message": "this is a sample message"
   },
-  "cabins": {}
+  "reservation": {
+    "cabins": [
+      {
+        "id": "cabin1",
+        "dates": [ "4/2/17", "4/3/17" ],
+        "guests": 2
+      },
+      {
+        "id": "cabin2",
+        "dates": [ "4/2/17", "4/3/17", "4/4/17" ],
+        "guests": 5
+      }
+    ]
+  }
 }

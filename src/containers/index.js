@@ -11,4 +11,5 @@ export Confirm from './Views/Confirm/Confirm';
 export Contact from './Views/Contact/Contact';
 export Main from './Views/Main/Main';
 export Review from './Views/Review/Review';
+export Error from './Views/Error/Error';
 export Success from './Views/Success/Success';

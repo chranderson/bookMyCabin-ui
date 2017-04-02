@@ -5,15 +5,11 @@
   flex: 1;
   width: 100%;
   min-height: 100%;
-  // @include flexBox(column, nowrap, center, flex-start);
   font-weight: 500;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   padding: 1em;
 
-  // @media (min-width: 768px) {
-  //   padding: 1em;
-  // }
 }
 
 .header {
@@ -21,11 +17,8 @@
   max-width: 600px;
 }
 .formWrap {
-  // @include flexBox(column, nowrap, flex-start, flex-start);
   width: 100%;
   max-width: 800px;
-  // min-height: 100%;
-  // flex: 1;
 }
 
 .formHeader {}

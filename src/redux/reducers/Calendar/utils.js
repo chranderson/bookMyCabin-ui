@@ -31,8 +31,8 @@ export function getDays(start, count, type) {
 };
 
 
-Date.prototype.addDays = function(days) {
-  var dat = new Date(this.valueOf());
+const addDays = (start, days) => {
+  var dat = new Date(start);
   dat.setDate(dat.getDate() + days);
   return dat;
 }
@@ -51,10 +51,10 @@ export function getBookedDates(dateRanges) {
 
       let datesList = [];
       for (let index = 0; index < totalDays; index++) {
-        const thisDate = start.addDays(index);
+        const thisDate = addDays(start, index);
         if (!acc.includes(thisDate)) {
 
-          datesList.push(formatDate(start.addDays(index)));
+          datesList.push(formatDate(addDays(start, index)));
         }
       }
 

@@ -2,24 +2,16 @@
 @import '../../style/mixins.scss';
 
 .cabin {
-  // @include flexBox(column, nowrap, center, flex-start);
-  // background: #313131;
-
-  // flex: 1;
-  // min-height: 60px;
-  // height: 100%;
+  @include flexBox(row, nowrap, center, flex-start);
+  background: #313131;
+  min-height: 60px;
+  // height: auto;
   // width: 100%;
-  // min-width: 90px;
+  min-width: 90px;
   // height: 80px;
-  // overflow: hidden;
+  overflow: hidden;
+  flex: 1;
   // background: orange;
-
-  // > img {
-    // height: 100%;
-    // width: 100%;
-    // width: auto;
-    // object-fit: cover;
-  // }
 }
 
 // .cabinImg {

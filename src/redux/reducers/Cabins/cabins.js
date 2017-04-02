@@ -4,7 +4,7 @@
 const initialState = [
   {
     id: 'cabin1',
-    imgs: ['http://silvertiplodgeandcabins.com/wp-content/themes/midway/framework/extensions/timthumb/timthumb.php?src=http://silvertiplodgeandcabins.com/wp-content/uploads/2016/06/cabin-1-outside.jpg&w=527'],
+    imgs: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin1.jpeg'],
     booked: [],
     name: 'Cabin 1',
     price: 185.00,
@@ -12,7 +12,7 @@ const initialState = [
   },
   {
     id: 'cabin2',
-    imgs: ['http://silvertiplodgeandcabins.com/wp-content/themes/midway/framework/extensions/timthumb/timthumb.php?src=http://silvertiplodgeandcabins.com/wp-content/uploads/2016/06/cabin-2-outside.jpg&w=527'],
+    imgs: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin2.jpeg'],
     booked: [],
     name: 'Cabin 2',
     price: 185.00,
@@ -20,7 +20,7 @@ const initialState = [
   },
   {
     id: 'cabin3',
-    imgs: ['http://silvertiplodgeandcabins.com/wp-content/themes/midway/framework/extensions/timthumb/timthumb.php?src=http://silvertiplodgeandcabins.com/wp-content/uploads/2016/06/cabin-3-outside.jpg&w=527'],
+    imgs: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin3.jpeg'],
     booked: [],
     name: 'Cabin 3',
     price: 185.00,
@@ -28,7 +28,7 @@ const initialState = [
   },
   {
     id: 'cabin4',
-    imgs: ['http://silvertiplodgeandcabins.com/wp-content/themes/midway/framework/extensions/timthumb/timthumb.php?src=http://silvertiplodgeandcabins.com/wp-content/uploads/2016/06/cabin-4-outside.jpg&w=527'],
+    imgs: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin4.jpeg'],
     booked: [],
     name: 'Cabin 4',
     price: 185.00,
@@ -36,7 +36,7 @@ const initialState = [
   },
   {
     id: 'cabin5',
-    imgs: ['http://silvertiplodgeandcabins.com/wp-content/themes/midway/framework/extensions/timthumb/timthumb.php?src=http://silvertiplodgeandcabins.com/wp-content/uploads/2016/06/cabin-5-outside.jpg&w=527'],
+    imgs: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin5.jpeg'],
     booked: [],
     name: 'Cabin 5',
     price: 185.00,
@@ -44,7 +44,7 @@ const initialState = [
   },
   {
     id: 'cabin7',
-    imgs: ['http://silvertiplodgeandcabins.com/wp-content/themes/midway/framework/extensions/timthumb/timthumb.php?src=http://silvertiplodgeandcabins.com/wp-content/uploads/2016/06/cabin-7-outside.jpg&w=527'],
+    imgs: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin7.jpeg'],
     booked: [],
     name: 'Cabin 7',
     price: 185.00,

@@ -10,28 +10,40 @@ const getExtraGuestFee = (guests, stay, fee) => {
 
 const getTax = (total, taxRate) => {
   const lessTax = total / (1 + taxRate);
-  const tax = (total - lessTax).toFixed(2);
-  return parseFloat(tax);
+  const tax = (total - lessTax);
+  // console.log('tax: ', tax);
+  return tax;
 }
 
 export function getCabinTotals(reservation, cabinDetails, priceConfig) {
+  // console.log('reservation: ', reservation);
   const cabinReservation = reservation.cabins;
-  const cabinKeys = Object.keys(cabinReservation);
-
+  // console.log('cabinReservation: ', cabinReservation);
+  // const cabinKeys = Object.keys(cabinReservation);
+  const cabinKeys = cabinReservation.map(cabinRes => cabinRes.id);
+  // console.log('cabinKeys: ', cabinKeys);
   const cabinTotals = cabinKeys.reduce((acc, key) => {
     const thisCabin = cabinDetails.filter(cbn => cbn.id === key)[0];
-    const stayLength = cabinReservation[key].dates.length;
-    // console.log('guestCount: ', cabinReservation[key]);
-    const guestCount = cabinReservation[key].guests;
+    // console.log('thisCabin: ', thisCabin);
+    const thisCabinReservation = cabinReservation.reduce((acc, cabinRes) => {
+      if (cabinRes.id ===  key) {
+        acc = cabinRes;
+      }
+      return acc;
+    }, {});
+    // console.log('thisCabinReservation: ', thisCabinReservation);
+    const stayLength = thisCabinReservation.dates.length;
+    // console.log('stayLength: ', stayLength);
+    const guestCount = thisCabinReservation.guests;
     // console.log('guestCount: ', guestCount);
     const baseFee = thisCabin.price * stayLength;
-
+    // console.log('baseFee: ', baseFee);
     const extraGuestFee = getExtraGuestFee(guestCount, stayLength, priceConfig.extraGuestFee);
     // console.log('key extraGuestFee: ', extraGuestFee);
     const totalFee = baseFee + extraGuestFee;
     acc[key] = {
       base: baseFee,
-      extraGuestFee: extraGuestFee,
+      extra: extraGuestFee,
       total: totalFee,
     };
     acc.total += totalFee;
@@ -39,18 +51,21 @@ export function getCabinTotals(reservation, cabinDetails, priceConfig) {
   }, {
     total: 0,
   });
+  // console.log('cabinTotals: ', cabinTotals);
 
-  const taxFee = getTax(cabinTotals.total, priceConfig.taxRate);
+  const taxFee = parseFloat(getTax(cabinTotals.total, priceConfig.taxRate));
   // console.log('taxFee: ', taxFee);
 
   const totalWithTax = cabinTotals.total + taxFee;
   // console.log('totalWithTax: ', totalWithTax);
 
-  return {
+  const returnVal = {
     cabins: cabinTotals,
     total: cabinTotals.total,
     tax: taxFee,
     totalWithTax: totalWithTax
   }
+  // console.log('returnVal: ', returnVal);
+  return returnVal;
 
 }

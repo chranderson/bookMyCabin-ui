@@ -3,17 +3,13 @@ import { connect } from 'react-redux';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import {
-  // Link
-} from '../../components';
-
-import {
   Confirm,
   Contact,
+  Error,
   Header,
   Menu,
   Main,
   Success,
-  // Review
 } from '../../containers';
 
 import './app.scss';
@@ -26,7 +22,6 @@ injectTapEventPlugin();
   state => ({
     currentView: state.nav.currentView,
     controlledDate: state.calendar.controlledDate,
-    time: state.info.time,
   }),
 )
 export default class App extends Component {
@@ -34,8 +29,6 @@ export default class App extends Component {
   static propTypes = {
     controlledDate: PropTypes.any,
     currentView: PropTypes.string,
-    // something: PropTypes.any,
-    time: PropTypes.string
   }
 
   constructor() {
@@ -47,13 +40,10 @@ export default class App extends Component {
     this.handleWheel = this.handleWheel.bind(this);
   }
 
-  componentDidMount() {
-    // console.log('time: ', this.props.time);
-  }
+  // componentDidMount() {}
 
   handleWheel(event) {
     // if (event.deltaY) console.log('scrolling: ', event.deltaY);
-
     this.setState({
       scrollUp: event.deltaY < 0,
     });
@@ -69,6 +59,7 @@ export default class App extends Component {
     if (currentView === 'main') view = (<Main date={controlledDate} />);
     if (currentView === 'confirm') view = (<Confirm />);
     if (currentView === 'contact') view = (<Contact />);
+    if (currentView === 'Error') view = (<Error />);
     if (currentView === 'review') view = (<Confirm review />);
     if (currentView === 'success') view = (<Success />);
 

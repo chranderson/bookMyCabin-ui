@@ -22,18 +22,8 @@ export default class Day extends Component {
     selected: false,
   }
 
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     selected: props.selected
-  //   }
-  // }
-
   handleClick = () => {
-    this.props.onSelect({cabinId: this.props.cabinId, date: this.props.date})
-    // this.setState({
-    //   selected: !this.state.selected
-    // });
+    this.props.onSelect({id: this.props.cabinId, date: this.props.date})
   };
 
   render() {
@@ -46,15 +36,11 @@ export default class Day extends Component {
       selected
     } = this.props;
 
-    // const {
-    //   selected
-    // } = this.state;
-
     const iconStyles = {
       color: 'grey',
     };
 
-    let dayStyle = 'day';
+    let dayStyle = 'day cabinRowItem';
     dayStyle += booked
               ? ' disabled'
               : ' enabled';
