@@ -1,6 +1,8 @@
-// @import '../../style/colors.scss';
+@import '../../style/mixins.scss';
 
 .occSelectField {
+  @include flexBox(row, nowrap, center, center);
+  // padding-left: 1em;
   // background: lighten($bgColor, 10%);
   // color: lighten($bgColor, 50%);
   // outline: none;
@@ -9,4 +11,5 @@
   // border-radius: 2px;
   // height: 30px;
   // padding: 0 1em;
+  font-size: 0.5em;
 }

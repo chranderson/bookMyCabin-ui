@@ -2,28 +2,34 @@
 @import '../../../style/mixins.scss';
 
 .successView {
-  max-width: 100%;
+  width: 100%;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   padding: 1em;
 }
 
+.successMessage {
+  margin: 0 auto;
+  max-width: 500px;
+}
+
 .viewTitle {
-  @include flexBox(row, wrap, center, flex-start);
+  @include flexBox(row, wrap, center, center);
   font-weight: 500;
   margin: 1em 0;
-  font-size: 1.5em;
+  font-size: 2em;
   color: #1dab53;
 
   > span {
-    margin-right: 8px;
+    margin-right: 10px;
     font-size: 30px;
   }
 }
 
 .nextStep {
-  @include flexBox(column, wrap, flex-start, center);
+  @include flexBox(column, wrap, center, center);
   font-weight: 500;
+  text-align: center;
   // border: 1px solid blue;
   > span {
     font-size: 0.8em;
@@ -33,4 +39,17 @@
     font-weight: 300;
   }
   padding: 0.5em 0;
+}
+
+
+.contactDetails {
+  margin: 2em 0;
+  @include flexBox(column, wrap, center, center);
+  font-size: 0.8em;
+
+  a {
+    color: darken($primary, 5%);
+    font-weight: 500;
+    line-height: 2;
+  }
 }

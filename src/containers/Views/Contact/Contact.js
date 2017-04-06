@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
+// import FontIcon from 'material-ui/FontIcon';
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+// import RaisedButton from 'material-ui/RaisedButton';
 import './contact.scss';
 
 import {
@@ -16,6 +17,8 @@ import {
 import {
   updateView,
 } from '../../../redux/reducers/Nav/nav';
+
+// const nextIcon = <FontIcon className="material-icons">navigate_next</FontIcon>;
 
 @connect(
   state => ({
@@ -51,7 +54,8 @@ export default class Contact extends Component {
   render() {
 
     const {
-      title
+      title,
+      values
     } = this.props;
 
     // const btnStyle = {margin: 12};
@@ -69,6 +73,7 @@ export default class Contact extends Component {
                          floatingLabelText="First Name"
                          fullWidth
                          name="firstName"
+                         value={values.firstName}
                          onChange={this.onFormChange} />
               <TextField className={'textInput'}
                          errorText={''}
@@ -77,6 +82,7 @@ export default class Contact extends Component {
                          fullWidth
                          floatingLabelText="Last Name"
                          name="lastName"
+                         value={values.lastName}
                          onChange={this.onFormChange} />
             </div>
             <div className="rowWrap">
@@ -85,8 +91,10 @@ export default class Contact extends Component {
                        fullWidth
                        hintText="Email"
                        id="email"
+                       type="email"
                        floatingLabelText="email address"
                        name="email"
+                       value={values.email}
                        onChange={this.onFormChange} />
             <TextField className={'textInput'}
                        errorText={''}
@@ -95,6 +103,7 @@ export default class Contact extends Component {
                        id="phone"
                        name="phone"
                        floatingLabelText="phone number"
+                       value={values.phone}
                        onChange={this.onFormChange} />
             </div>
 
@@ -104,11 +113,22 @@ export default class Contact extends Component {
                        fullWidth={true}
                        id="message"
                        name="message"
+                       multiLine={true}
+                       rows={2}
+                       rowsMax={10}
+                       value={values.message}
                        onChange={this.onFormChange} />
-            <br />
+            { /* <br />
             <div className="btnWrap">
-              <RaisedButton label="Confirm Reservation" primary={true} onTouchTap={this.handleSubmit} style={{margin:'1.5em 0'}} />
-            </div>
+              <RaisedButton
+                label="Confirm Request"
+                labelPosition="before"
+                icon={nextIcon}
+                primary={true}
+                onTouchTap={this.handleSubmit}
+                style={{margin:'1.5em 0'}}
+                type="submit" />
+            </div>*/ }
           </form>
         </div>
       </View>

@@ -51,7 +51,7 @@ export default class Success extends Component {
   static defaultProps = {
     // doSomethingElse: () => alert('what would you like this to do? I can take it off'),
     sendEmail: () => console.log('sendEmail called: '),
-    title: 'Reservation Sent!',
+    title: 'Request Sent!',
     updateView: (newView) => console.log('updateView: ', newView),
   }
 
@@ -64,21 +64,21 @@ export default class Success extends Component {
     return (
       <View>
         <div className="successView">
-          <div className="viewTitle">
-            {checkIcon} {title}
-          </div>
-          <div className="viewbody">
-            <div className="nextStep">
-              You should receive a confirmation email shortly.
-              <span>If you dont receive the confirmation email in the next 30 min, check your spam folder and/or give us a call.</span>
+          <div className="successMessage">
+            <div className="viewTitle">
+              {checkIcon} {title}
             </div>
-            <div className="nextStep">
-              Call
-              <span>Will you call us?</span>
-            </div>
-            <div className="nextStep">
-              Payment
-              <span>How will we do payment?</span>
+            <div className="viewbody">
+              <div className="nextStep">
+                We will call you shortly to confirm the reservation and collect a credit card payment over the phone for the 50% deposit.
+              </div>
+              <div className="contactDetails">
+                <address>
+                  <a href="https://goo.gl/maps/3hxjomW1Y2r" target="_blank" title="View on Google Maps">35930 Janota Cir, Soldotna, AK 99669</a>
+                </address>
+                <a href="mailto:silvertiplodgeandcabins@gmail.com?subject=Just%20Requested%20a%20Reservation" target="_blank" title="Email Silvertip Lodge and Cabins">silvertiplodgeandcabins@gmail.com</a>
+                <a href="tel:907-262-4450" target="_blank" title="Press to Call, Press and Hold to Copy">(907) 262-4450</a>
+              </div>
             </div>
           </div>
         </div>

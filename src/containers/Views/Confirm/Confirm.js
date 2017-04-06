@@ -1,10 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import CircularProgress from 'material-ui/CircularProgress';
-import Paper from 'material-ui/Paper';
 
-import Chip from 'material-ui/Chip';
+import Recaptcha from 'react-recaptcha';
+
+import CircularProgress from 'material-ui/CircularProgress';
+import FontIcon from 'material-ui/FontIcon';
+// import Paper from 'material-ui/Paper';
+// import Chip from 'material-ui/Chip';
 import RaisedButton from 'material-ui/RaisedButton';
+// import Subheader from 'material-ui/Subheader';
 import './confirm.scss';
 
 import createCabinPayload from './createCabinPayload';
@@ -14,7 +18,8 @@ import {
 } from '../../utils/maths';
 
 import {
-  OccupancySelectField,
+  CabinReviewCard,
+  // OccupancySelectField,
   View
 } from '../../../components';
 
@@ -26,6 +31,16 @@ import {
   sendEmail,
   updateGuestCount,
 } from '../../../redux/reducers/UserData/userData';
+
+
+let recaptchaInstance;
+
+const resetRecaptcha = () => {
+  // console.log('reset called');
+  recaptchaInstance.reset();
+};
+
+const sendIcon = <FontIcon className="material-icons">send</FontIcon>;
 
 @connect(
   state => ({
@@ -64,6 +79,13 @@ export default class Confirm extends Component {
     updateGuestCount: (cabin, count) => console.log('updateGuestCount: ', cabin, count),
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      verified: false
+    }
+  }
+
   getTax = (total) => {
     const lessTax = total / 1.03;
     const tax = (total - lessTax).toFixed(2);
@@ -82,6 +104,7 @@ export default class Confirm extends Component {
     } else {
       this.sendEmail();
     }
+    resetRecaptcha();
 
   };
 
@@ -89,57 +112,26 @@ export default class Confirm extends Component {
     const {
       cabins,
       reservation,
+      // review
     } = this.props;
 
-    const chipStyle = {
-      margin: 4,
-      fontSize: 10
-    };
-
     const reservedCabins = reservation.cabins;
-    const savedCabinIds = reservedCabins.map(rCabin => rCabin.id);
+    // filter -> return id for cabins that have one or more dates
+    const savedCabinIds = reservedCabins.filter(cabin => cabin.dates.length)
+                                        .map(rCabin => rCabin.id);
+    // const savedCabinIds = reservedCabins.map(rCabin => rCabin.id);
     return savedCabinIds.map((savedCabinId, index) => {
 
       const thisCabin = cabins.filter(cabin => cabin.id === savedCabinId)[0];
       const thisSavedCabin = reservedCabins.filter(resCabin => resCabin.id === savedCabinId)[0];
-      const savedDates = thisSavedCabin.dates.sort((itemA, itemB) => itemA < itemB ? -1 : 1);
-      const guestCount = thisSavedCabin.guests;
-      const lastDay = savedDates[savedDates.length - 1];
-      const lastDate = new Date(lastDay);
-      const checkoutDate = new Date(lastDate.setDate((lastDate.getDate() + 1)));
 
-      const cabinTotalPrice = cabinFees[savedCabinId].total;
       return (
-        <Paper className="cabinDetail" key={index} zDepth={1}>
-          <div className="detailTitle">
-            <span>{ thisCabin.name }</span>
-            <span>{`$${cabinTotalPrice}.00`}</span>
-          </div>
-          <div className="aboutCabin">
-            <Chip style={chipStyle}>{`Sleeps: ${thisCabin.sleeps}`}</Chip>
-            <Chip style={chipStyle}>{`Price: $${thisCabin.price}`}</Chip>
-          </div>
-
-          <OccupancySelectField
-            defaultValue={guestCount}
-            id={thisCabin.id}
-            onChange={this.updateGuestCount}
-            options={thisCabin.sleeps} />
-
-          <div className="savedDates">
-            <span>{`Reserve the Night${savedDates.length > 1 ? 's' : ''} of:`}</span>
-            <div className="datesList">
-              {
-                savedDates.map((date, ind) => {
-                  return <span key={ind}>{date}{ind !== savedDates.length - 1 ? ', ' : null}</span>;
-                })
-              }
-            </div>
-            <span style={{fontSize: '0.6em', fontWeight: 400, opacity: '0.7', padding: '0.5em 0'}}>
-              Check Out By <strong>11AM</strong> on the morning of <strong>{checkoutDate.toLocaleDateString()}</strong>
-            </span>
-          </div>
-        </Paper>
+        <CabinReviewCard
+          cabin={thisCabin}
+          fees={cabinFees[savedCabinId]}
+          key={index}
+          reservation={thisSavedCabin}
+          updateGuestCount={this.updateGuestCount} />
       );
     })
   }
@@ -201,6 +193,93 @@ export default class Confirm extends Component {
     );
   }
 
+  callback = () => {
+    console.log('Done!!!!');
+  }
+
+  verifyCallback = (response) => {
+    // console.log(response);
+    this.setState({
+      verified: true,
+    });
+  }
+
+  expiredCallback = () => {
+    // console.log(`Recaptcha expired`);
+    this.setState({
+      verified: false,
+    });
+  }
+
+  // resetRecaptcha = () => {
+  //   console.log('reset called');
+  //   recaptchaInstance.reset();
+  // }
+
+  renderRecaptcha() {
+    const captchaKey = '6LeqRRsUAAAAACRJEcUKlPiDxfPoNVvfpouSAGFt';
+    return (
+      <div className="confirmBtnWrap">
+        <Recaptcha
+          ref={e => recaptchaInstance = e}
+          sitekey={captchaKey}
+          size="compact"
+          render="explicit"
+          verifyCallback={this.verifyCallback}
+          onloadCallback={this.callback}
+          expiredCallback={this.expiredCallback}
+        />
+      </div>
+    );
+  }
+
+  renderInfo(fees) {
+    return (
+      <div>
+        <div className="info">
+          <span><strong>A Few Things</strong></span>
+          <ul>
+            <li>50% deposit is required to confirm a reservation</li>
+            <li>Payment in full is due 30 days prior to arrival</li>
+          </ul>
+        </div>
+        <div className="info">
+          <span><strong>Cancellation Policy</strong></span>
+          <ul>
+            <li>To receive a refund of your deposit, less a 5% booking fee, you must give written notice more than 60 days prior to arrival.</li>
+            <li>No refund is given on cancellations less than 30 days prior to your reservation.</li>
+            <li>No partial refunds will be issued for late arrival or early departure.</li>
+          </ul>
+        </div>
+        <div className="grandTotal">
+          <div className="net">
+            <div className="totalKey">{'Net:'}</div>
+            <div className="totalVal">${fees.total.toFixed(2)}</div>
+          </div>
+          <span className="tax">
+            <span className="totalKey">{'Tax (3%):'}</span>
+            <span className="totalVal">${fees.tax.toFixed(2)}</span>
+          </span>
+          <span className="total">
+            <span className="totalKey">Total: </span>
+            <span className="totalVal">${fees.totalWithTax.toFixed(2)}</span>
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  renderUserInfo(user) {
+    return (
+      <div className="userDetails">
+        <span><span className="keySpan">Name:</span>{`${user.firstName} ${user.lastName}`}</span>
+        <span><span className="keySpan">Email:</span>{`${user.email}`}</span>
+        <span><span className="keySpan">Phone:</span>{`${user.phone}`}</span>
+        <span><span className="keySpan">Message:</span>{`${user.message}`}</span>
+      </div>
+    );
+  }
+
   render() {
 
     const {
@@ -217,27 +296,28 @@ export default class Confirm extends Component {
     // console.log('cabinFees: ', cabinFees);
     // const btnStyle = {margin: '1em'};
 
+    console.log('reservation: ', reservation);
+    const hasEmptyGuestCount = reservation.cabins.some(cabin => cabin.guests === 0);
+    // console.log('guestCounts: ', guestCounts);
     return (
       <View>
         {
           !loading
           ? <div className="confirmView">
             <div className="info">
-              <span><strong>{ review ? 'Selected Dates:' : 'Please review selected dates and info:' }</strong></span>
               {
                 !review
-                ? <div className="userDetails">
-                    <span><span className="keySpan">Name:</span>{`${values.firstName} ${values.lastName}`}</span>
-                    <span><span className="keySpan">Email:</span>{`${values.email}`}</span>
-                    <span><span className="keySpan">Phone:</span>{`${values.phone}`}</span>
-                    <span><span className="keySpan">Message:</span>{`${values.message}`}</span>
-                  </div>
+                ? this.renderUserInfo(values)
                 : null
               }
-              <ul>
-                <li>All cabins are <strong>$185</strong> plus tax per night based on double occupancy.</li>
-                <li>Each additional person is <strong>$25</strong> per night.</li>
-              </ul>
+
+
+              {
+                hasEmptyGuestCount
+                ? <span>Please enter number of guests</span>
+                : <span>Review Saved Cabins</span>
+              }
+
             </div>
             <div className="detailsWrap">
               <div className="reservationDetails">
@@ -245,34 +325,31 @@ export default class Confirm extends Component {
               </div>
             </div>
 
-            <div className="info">
-              <span><strong>A Few Things</strong></span>
-              <ul>
-                <li>50% deposit is required to confirm a reservation</li>
-                <li>Payment in full is due 30 days prior to arrival</li>
-              </ul>
-            </div>
-            <div className="info">
-              <span><strong>Cancellation Policy</strong></span>
-              <ul>
-                <li>To receive a refund of your deposit, less a 5% booking fee, you must give written notice more than 60 days prior to arrival.</li>
-                <li>No refund is given on cancellations less than 30 days prior to your reservation.</li>
-                <li>No partial refunds will be issued for late arrival or early departure.</li>
-              </ul>
+            {
+              !review
+              ? this.renderInfo(cabinFees)
+              : null
+            }
 
-            </div>
+            {
+              !review
+              ? this.renderRecaptcha()
+              : null
+            }
 
-            <div className="confirmTotal">
-              <span className="tax"><span className="keySpan">{'Net:'}</span>${cabinFees.total.toFixed(2)}</span>
-              <span className="tax"><span className="keySpan">{'Tax (3%):'}</span>${cabinFees.tax.toFixed(2)}</span>
-              <span className="total">
-                <span>Total: </span>
-                ${cabinFees.totalWithTax.toFixed(2)}
-              </span>
-            </div>
-            <div className="confirmBtnWrap">
-              <RaisedButton label="Request Reservation" onTouchTap={this.handleSubmit} primary={true} fullWidth />
-            </div>
+            {
+            !review
+            ? <div className="confirmBtnWrap">
+                <RaisedButton
+                  label="Submit Request"
+                  labelPosition="before"
+                  icon={sendIcon}
+                  onTouchTap={this.handleSubmit}
+                  primary={true} fullWidth
+                  disabled={!review ? !this.state.verified : false} />
+              </div>
+             : null
+            }
           </div>
           : this.renderLoading()
         }

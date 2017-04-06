@@ -14,22 +14,16 @@ export default class OccupancySelectField extends Component {
 
   static defaultProps = {
     onChange: (val) => console.log('onChange called: ', val),
-    defaultVal: 2,
+    // defaultVal: 2,
     id: '',
     options: 6,
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: props.defaultVal
-    }
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   handleChange = (evt, val) => {
-    this.setState({
-      value: val + 1
-    });
     this.props.onChange(this.props.id, val + 1);
   }
 
@@ -38,21 +32,30 @@ export default class OccupancySelectField extends Component {
     for (let index = 1; index < count + 1; index++) {
       options.push(index);
     }
-    return options.map(option => <MenuItem key={option} value={option} primaryText={option} />);
+    return options.map(option => <MenuItem key={option} value={option} primaryText={`${option} guest${option > 1 ? 's' : ''}`} />);
   }
 
   render() {
 
     const {
+      defaultValue,
       options,
     } = this.props;
 
+    const dropdownStyle = {
+      maxWidth: '150px',
+      // margin: 0,
+      // padding: 0,
+      // border: '1px solid blue',
+      // fontSize: '1.1em',
+    };
     return (
       <div className="occSelectField">
         <SelectField
-          floatingLabelText="Number of Guests"
-          value={this.state.value}
-          onChange={this.handleChange}>
+          hintText="Guest count"
+          value={defaultValue ? defaultValue : undefined}
+          onChange={this.handleChange}
+          style={dropdownStyle}>
           {this.renderOptions(options)}
         </SelectField>
       </div>

@@ -5,6 +5,7 @@ const initialState = [
   {
     id: 'cabin1',
     imgs: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin1.jpeg'],
+    url: 'http://silvertiplodgeandcabins.com/tour/cabin-1/',
     booked: [],
     name: 'Cabin 1',
     price: 185.00,
@@ -13,6 +14,7 @@ const initialState = [
   {
     id: 'cabin2',
     imgs: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin2.jpeg'],
+    url: 'http://silvertiplodgeandcabins.com/tour/cabin-2/',
     booked: [],
     name: 'Cabin 2',
     price: 185.00,
@@ -21,6 +23,7 @@ const initialState = [
   {
     id: 'cabin3',
     imgs: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin3.jpeg'],
+    url: 'http://silvertiplodgeandcabins.com/tour/cabin-3/',
     booked: [],
     name: 'Cabin 3',
     price: 185.00,
@@ -29,6 +32,7 @@ const initialState = [
   {
     id: 'cabin4',
     imgs: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin4.jpeg'],
+    url: 'http://silvertiplodgeandcabins.com/tour/cabin-4/',
     booked: [],
     name: 'Cabin 4',
     price: 185.00,
@@ -37,6 +41,7 @@ const initialState = [
   {
     id: 'cabin5',
     imgs: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin5.jpeg'],
+    url: 'http://silvertiplodgeandcabins.com/tour/cabin-5/',
     booked: [],
     name: 'Cabin 5',
     price: 185.00,
@@ -45,6 +50,7 @@ const initialState = [
   {
     id: 'cabin7',
     imgs: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin7.jpeg'],
+    url: 'http://silvertiplodgeandcabins.com/tour/cabin-6/',
     booked: [],
     name: 'Cabin 7',
     price: 185.00,

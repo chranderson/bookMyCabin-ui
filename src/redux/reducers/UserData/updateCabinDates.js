@@ -1,7 +1,10 @@
 function updateDates(newDate, currentDates) {
-  return !currentDates.includes(newDate)
-         ? [...currentDates, newDate]
-         : currentDates.filter(date => date !== newDate);
+  const newDates = !currentDates.includes(newDate)
+                 ? [...currentDates, newDate]
+                 : currentDates.filter(date => date !== newDate);
+
+  const sortedDates = newDates.sort((itemA, itemB) => itemA < itemB ? -1 : 1);
+  return sortedDates;
 };
 
 export default function updateCabinDates(savedCabins, newItem) {
@@ -20,10 +23,11 @@ export default function updateCabinDates(savedCabins, newItem) {
 
     // update the cabin object if the current mappedId key === newItem id
     if (key === newItem.id) {
+      const newDates = updateDates(newItem.date, theseDates);
       returnObj = {
         id: key,
-        dates: updateDates(newItem.date, theseDates),
-        guests: thisCabin ? thisCabin.guests : 2,
+        dates: newDates,
+        guests: thisCabin && newDates.length ? thisCabin.guests : 0,
       };
 
     } else {

@@ -2,7 +2,15 @@ const UPDATE_VIEW = 'nav/UPDATE_VIEW';
 
 const initialState = {
   currentView: 'main',
-  views: ['main', 'confirm', 'contact', 'error', 'submit', 'success']
+  views: [
+    'main',
+    'review',
+    'contact',
+    'confirm',
+    'submit',
+    'error',
+    'success',
+  ],
 };
 
 export default (state = initialState, action) => {

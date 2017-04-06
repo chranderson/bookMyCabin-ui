@@ -1,0 +1,78 @@
+@import '../../style/colors.scss';
+@import '../../style/mixins.scss';
+
+.cabinReviewCard {
+  // border: 1px solid blue;
+  @include flexBox(column, nowrap, flex-start, flex-start);
+  margin-bottom: 1em;
+  // width: 100%;
+}
+
+.cabinReviewHeader {
+  @include flexBox(row, nowrap, center, space-between);
+  // height: 60px;
+  border-bottom: 1px solid darken(lightgrey, 10%);
+  width: 100%;
+  padding: 0 1em;
+  // margin-bottom: 1em;
+}
+
+.cabinReviewBodyRow {
+  @include flexBox(row, nowrap, center, space-between);
+  height: 50px;
+  width: 100%;
+  border-bottom: 1px dotted lightgrey;
+  padding: 0 1em;
+  font-size: 0.9em;
+  color: #313131;
+}
+
+.detailWrap {
+  width: 80px;
+  margin-right: 6px;
+  @include flexBox(column, nowrap, center, center);
+  // border: 1px solid red;
+}
+
+.detailTitle {
+  // border: 1px solid blue;
+  @include ellipsis;
+}
+
+.detailTotal {
+  @include flexBox(column, nowrap, flex-end, center);
+  flex: 1;
+  // text-align: right;
+}
+.detailLabel {
+  font-size: 0.6em;
+  color: darken(lightgrey, 10%);
+  @include ellipsis;
+}
+
+.detailMetric {
+  @include flexBox(row, nowrap, center, center);
+  font-size: 1em;
+  line-height: 1.2;
+  // border: 1px solid blue;
+}
+
+.multiplySymbol {
+  // border: 1px solid red;
+  // margin: 0 1em;
+  font-weight: 300;
+  transform: translateY(-8px);
+  color: rgba(0,0,0,0.3);
+}
+
+.dim {
+  opacity: 0.6;
+}
+
+.dollarSign {
+  height: 100%;
+  font-size: 0.7em;
+  margin-right: 2px;
+  // border: 1px solid red;
+  // transform: translateY(-2px);
+}

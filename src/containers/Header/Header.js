@@ -51,7 +51,7 @@ export default class Header extends Component {
 
   static defaultProps = {
     onDateChange: (evt) => console.log('onDateChange: ', evt),
-    title: 'B',
+    title: 'Cabin Availability',
     view: 'main'
   }
 
@@ -146,11 +146,16 @@ export default class Header extends Component {
             ? <IconButton onTouchTap={this.handleNextClick} style={{buttonStyle}} tooltip={'next fortnight'} className="backBtn">
                 <FontIcon className="material-icons">chevron_right</FontIcon>
               </IconButton>
-            : <div className="headerTotal">
+            : null
+          }
+          {
+            currentView !== 'main' && currentView !== 'success'
+            ? <div className="headerTotal">
                 <span className="totalLabel">Total:</span>
                 <span style={{fontWeight: 500}}>${totalFees.total}</span>
                 <span className="totalChange">.{`${totalFees.total.toFixed(2).slice(-2)}`}</span>
               </div>
+            : null
           }
         </div>
       </div>

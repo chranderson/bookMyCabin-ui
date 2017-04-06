@@ -25,7 +25,7 @@ export default class CabinCard extends Component {
     price: '',
     showOverlay: true,
   }
-
+  
   renderCalendar() {
     const {
       price

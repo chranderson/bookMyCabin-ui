@@ -1,7 +1,9 @@
-// const sampleData = require('./sampleSession.json');
+const sampleData = require('./sampleSession.json');
 
 import updateCabinDates from './updateCabinDates';
 import updateCabinGuestCount from './updateCabinGuestCount';
+
+const CLEAR_SAVED_CABINS = 'userData/CLEAR_SAVED_CABINS';
 
 const UPDATE_CABIN_DATES = 'userData/UPDATE_CABIN_DATES';
 const UPDATE_GUEST_COUNT = 'userData/UPDATE_GUEST_COUNT';
@@ -16,33 +18,34 @@ const initialState = {
   loading: false,
   totalCharge: 0,
   values: {
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    message: ''
+    firstName: 'Chris',
+    lastName: 'Anderson',
+    email: 'chrandersun@gmail.com',
+    phone: '720-400-2738',
+    message: 'yolo'
+  },
+  context: {
+    reservation: sampleData.reservation,
+    user: sampleData.user
   },
   // context: {
-  //   reservation: sampleData.reservation,
-  //   user: sampleData.user
+  //   reservation: {
+  //     cabins: []
+  //   },
+    // user: {
+    //   name: '',
+    //   email: '',
+    //   phone: '',
+    //   message: ''
+    // }
   // },
-  context: {
-    reservation: {
-      cabins: []
-    },
-    user: {
-      name: '',
-      email: '',
-      phone: '',
-      message: ''
-    }
-  },
   priceConfig: {
     baseGuestCount: 2,
     extraGuestFee: 25,
     taxRate: 0.03
   }
 };
+
 
 function updateFieldValue(values, field, newValue) {
   const fieldKeys = Object.keys(values);
@@ -60,6 +63,14 @@ function updateFieldValue(values, field, newValue) {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case CLEAR_SAVED_CABINS:
+      return {
+        ...state,
+        context: {
+          reservation: { cabins: [] },
+          user: Object.assign({}, state.context.user)
+        },
+      };
     case UPDATE_FORM_DATA:
       const newValues = updateFieldValue(state.values, action.field, action.value);
       return {
@@ -114,6 +125,13 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+
+
+export function clearSavedCabins() {
+  return {
+    type: CLEAR_SAVED_CABINS
+  };
+}
 
 export function updateSavedDates(item) {
   return {

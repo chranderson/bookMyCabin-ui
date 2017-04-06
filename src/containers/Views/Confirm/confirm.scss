@@ -2,7 +2,9 @@
 @import '../../../style/mixins.scss';
 
 .confirmView {
-  max-width: 100%;
+  width: 100%;
+  // height: 100%;
+  min-height: 100%;
   font-weight: 500;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
@@ -40,56 +42,61 @@
 
 .reservationDetails {
   width: 100%;
-  padding: 1em;
+  // height: 100%;
   padding-bottom: 0;
-  @include flexBox(column, nowrap, flex-start, flex-start);
-}
+  // @include flexBox(column, nowrap, flex-start, flex-start);
 
-.cabinDetail, .savedDates {
-  @include flexBox(column, nowrap, flex-start, flex-start);
-}
-
-.cabinDetail {
-  flex: 1;
-  padding: 1em;
-  // margin: 1em;
-  margin-bottom: 1em;
-  width: 100%;
-  // flex-basis: 325px;
-
-  // &:last-of-type {
-  //   margin-bottom: 0;
-  // }
-}
-
-.detailTitle {
-  @include flexBox(row, nowrap, center, space-between);
-  // height: 60px;
-  border-bottom: 1px solid grey;
-  width: 100%;
-  margin-bottom: 1em;
+  @media (min-width: 600px) {
+    padding: 1em;
+  }
 }
 
 .datesList, .aboutCabin {
   font-weight: 300;
-  @include flexBox(row, wrap, flex-start, flex-start);
+  @include flexBox(row, wrap, center, flex-start);
+  width: 100%;
+}
+
+.datesList {
+  padding: 0 1em 1em;
+}
+
+.dateItem {
+  width: 60px;
+  @include flexBox(column, nowrap, space-between, center);
+  border: 1px solid darken(lightgrey, 5%);
+  border-radius: 1px;
+  // paddi: 5px;
+  text-align: center;
+  margin-right: 8px;
+  margin-bottom: 10px;
+  font-family: monospace;
+  background: lighten(lightgrey, 15%);
+  > .dateItemDate {
+    color: $primary;
+    font-size: 1.3em;
+    // font-style: bold;
+    letter-spacing: -3px;
+  }
+  > .dateItemDay {
+    font-size: 0.7em;
+    font-weight: 400;
+
+    color: darken(lightgrey, 14%);
+    border: 1px solid darken(lightgrey, 5%);
+    margin: 0px 5px 5px;
+    background: $white;
+  }
 }
 
 .aboutCabin {
-  // font-size: 0.5em;
+  @include flexBox(row, nowrap, center, space-between);
+  border: 1px solid black;
 }
 
 .datesList {
   > span {
     margin: 4px;
-  }
-}
-
-.confirmTotal {
-  @include flexBox(column, nowrap, flex-start, flex-start);
-  padding: 1em;
-  @media (min-width: 900px) {
-    padding: 1em 2em;
   }
 }
 
@@ -100,9 +107,14 @@
 
   font-weight: 300;
   // font-size: 0.75em;
+  font-size: 0.8em;
   padding: 1em;
   @media (min-width: 900px) {
-    padding: 1em 2em;
+    // padding: 1em 2em;
+  }
+
+  > h3 {
+    padding: 1em;
   }
 }
 
@@ -121,4 +133,54 @@
 
 .confirmBtnWrap {
   padding: 1em;
+}
+
+.cabinHelpText {
+  font-size: 0.6em;
+  font-weight: 400;
+  opacity: 0.7;
+  padding: 1em 1.5em;
+}
+
+
+
+// new
+.grandTotal {
+  @include flexBox(column, nowrap, flex-end, flex-start);
+  padding: 1em;
+  @media (min-width: 900px) {
+    padding: 1em 2em;
+  }
+}
+
+.grandTotal > .net, .grandTotal > .tax, .grandTotal > .total {
+  @include flexBox(row, nowrap, center, flex-end);
+  line-height: 1.6;
+  padding: 0 5px;
+}
+
+.grandTotal > .net {
+  // border: 1px solid orange;
+  font-size: 0.8em;
+}
+.grandTotal > .tax {
+  border-bottom: 1px dotted grey;
+  font-size: 0.8em;
+  opacity: 0.8;
+  > .totalKey {
+    font-size: 0.9em;
+  }
+}
+.grandTotal > .total {
+  // border: 1px solid pink;
+}
+.totalKey {
+  // border: 1px solid orange;
+  // width: 100px;
+}
+.totalVal {
+  // margin-left: 1em;
+  width: 100px;
+  // border: 1px solid magenta;
+  text-align: right;
 }

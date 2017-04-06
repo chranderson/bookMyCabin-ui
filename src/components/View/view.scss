@@ -12,6 +12,7 @@
   overflow: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+  @include linearGradient(0deg, darken($white, 8%), darken($white, 4%));
 }
 
 .datePickerWrap {
