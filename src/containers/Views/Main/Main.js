@@ -1,10 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-// import {} from '../../redux/reducers/Calendar/calendar';
-// import DatePicker from 'material-ui/DatePicker';
-// import RaisedButton from 'material-ui/RaisedButton';
-// import getBookedDates from './getBookedDates';
-// import Paper from 'material-ui/Paper';
 
 import './main.scss';
 

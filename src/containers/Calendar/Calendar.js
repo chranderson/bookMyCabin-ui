@@ -87,6 +87,10 @@ export default class Calendar extends Component {
                              ? thisCabin.dates.includes(date)
                              : false;
 
+            const today = new Date().getTime();
+
+            const currentDay = new Date(date).getTime() + 86400000;
+
             return (
               <Day cabinId={cabin}
                    date={date}
@@ -94,7 +98,7 @@ export default class Calendar extends Component {
                    onSelect={this.handleDateSelect}
                    price={price}
                    selected={isSelected}
-                   booked={isBooked(cabin, date)} />
+                   booked={isBooked(cabin, date) || (currentDay < today)} />
             );
           })
         }

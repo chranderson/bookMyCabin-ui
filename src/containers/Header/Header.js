@@ -9,6 +9,11 @@ import {
   getCabinTotals
 } from '../utils/maths';
 
+import {
+  getToday
+} from '../utils/formatDate';
+
+
 import './header.scss';
 
 import {
@@ -21,6 +26,7 @@ import {
   state => ({
     cabins: state.cabins,
     controlledDate: state.calendar.controlledDate,
+    days: state.calendar.days,
     priceConfig: state.userData.priceConfig,
     currentView: state.nav.currentView,
     reservation: state.userData.context.reservation,
@@ -37,6 +43,7 @@ export default class Header extends Component {
   static propTypes = {
     cabins: PropTypes.array,
     currentView: PropTypes.string,
+    days: PropTypes.array,
     getDates: PropTypes.func,
     getNextDates: PropTypes.func,
     getPrevDates: PropTypes.func,
@@ -84,6 +91,7 @@ export default class Header extends Component {
       cabins,
       controlledDate,
       currentView,
+      days,
       priceConfig,
       reservation,
       title,
@@ -105,6 +113,8 @@ export default class Header extends Component {
       opacity: 0.8,
     };
     const totalFees = getCabinTotals(reservation, cabins, priceConfig);
+
+    const disableBackBtn = days.includes(getToday());
     return (
       <div className="appHeader">
         <div className="appHeaderTitle">
@@ -113,7 +123,7 @@ export default class Header extends Component {
         <div className="toolBar">
           {
             currentView === 'main'
-            ? <IconButton onTouchTap={this.handleBackClick} className="backBtn">
+            ? <IconButton onTouchTap={this.handleBackClick} className="backBtn" disabled={disableBackBtn}>
                 <FontIcon className="material-icons">chevron_left</FontIcon>
               </IconButton>
             : null
