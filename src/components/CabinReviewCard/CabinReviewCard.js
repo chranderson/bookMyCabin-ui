@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-// import Chip from 'material-ui/Chip';
+import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
 import Subheader from 'material-ui/Subheader';
 import './cabinReviewCard.scss'
@@ -11,15 +11,14 @@ import {
 
 const sortDates = (date1, date2) => new Date(date1).getTime() < new Date(date2).getTime() ? -1 : 1;
 
-// const chipStyle = {
-//   margin: 4,
-//   fontSize: 10
-// };
+const addIcon = <FontIcon className="material-icons">add_circle_outline</FontIcon>;
 
 export default class CabinReviewCard extends Component {
 
   static propTypes = {
+    addCabinDate: PropTypes.func,
     cabin: PropTypes.object,
+    deleteCabinDate: PropTypes.func,
     fees: PropTypes.object,
     reservation: PropTypes.object,
     review: PropTypes.bool,
@@ -27,12 +26,22 @@ export default class CabinReviewCard extends Component {
   }
 
   static defaultProps = {
+    deleteCabinDate: (id, dates) => console.log('deleteCabinDate: ', id, dates),
     fees: {
       base: 0,
       extra: 0,
       total: 0
     },
     review: false
+  }
+
+  handleAddDateClick = () => {
+    this.props.addCabinDate();
+  }
+
+  deleteCabinDate = (date) => {
+    // console.log('deleteCabinDate: ', date, this.props.cabin.id);
+    this.props.deleteCabinDate(this.props.cabin.id, date);
   }
 
   render() {
@@ -54,7 +63,7 @@ export default class CabinReviewCard extends Component {
 
     const nightLabel = `Night${nightCount > 1 ? 's' : ''}`;
     const extraGuestLabel = `Extra Guest${extraGuests !== 1 ? 's' : ''}`;
-    console.log('cabin: ', cabin);
+    // console.log('cabin: ', cabin);
     const extraFeeMetric = `detailMetric ${extraGuests < 1 ? 'dim' : ''}`;
     const dollarSign = <div className="dollarSign">$</div>;
     return (
@@ -87,6 +96,7 @@ export default class CabinReviewCard extends Component {
             <span className="detailMetric">{nightCount}</span>
             <span className="detailLabel">{nightLabel}</span>
           </div>
+          <span className="helpText">based on double occupancy</span>
           <div className="detailTotal">
             <span className="detailMetric">{dollarSign}{(cabin.price * nightCount).toFixed(2)}</span>
             <span className="detailLabel">Base Fee</span>
@@ -127,13 +137,16 @@ export default class CabinReviewCard extends Component {
               savedDates.map((date, index) => {
 
                 return (
-                  <div className="dateItem" key={index}>
+                  <div id={date} className="dateItem" key={index} onClick={() => this.deleteCabinDate(date)}>
                     <span className="dateItemDate">{date.slice(0, -3)}</span>
                     <span className="dateItemDay">{new Date(date).toDateString().slice(0, 3)}</span>
                   </div>
                 );
               })
             }
+            <div className="addDateItem" onClick={this.handleAddDateClick} title="Add Date">
+              { addIcon }
+            </div>
           </div>
           {
             !review

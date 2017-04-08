@@ -51,54 +51,6 @@
   }
 }
 
-.datesList, .aboutCabin {
-  font-weight: 300;
-  @include flexBox(row, wrap, center, flex-start);
-  width: 100%;
-}
-
-.datesList {
-  padding: 0 1em 1em;
-}
-
-.dateItem {
-  width: 60px;
-  @include flexBox(column, nowrap, space-between, center);
-  border: 1px solid darken(lightgrey, 5%);
-  border-radius: 1px;
-  // paddi: 5px;
-  text-align: center;
-  margin-right: 8px;
-  margin-bottom: 10px;
-  font-family: monospace;
-  background: lighten(lightgrey, 15%);
-  > .dateItemDate {
-    color: $primary;
-    font-size: 1.3em;
-    // font-style: bold;
-    letter-spacing: -3px;
-  }
-  > .dateItemDay {
-    font-size: 0.7em;
-    font-weight: 400;
-
-    color: darken(lightgrey, 14%);
-    border: 1px solid darken(lightgrey, 5%);
-    margin: 0px 5px 5px;
-    background: $white;
-  }
-}
-
-.aboutCabin {
-  @include flexBox(row, nowrap, center, space-between);
-  border: 1px solid black;
-}
-
-.datesList {
-  > span {
-    margin: 4px;
-  }
-}
 
 .info {
   // line-height: 1.6;

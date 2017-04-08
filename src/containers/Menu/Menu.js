@@ -4,20 +4,21 @@ import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
-// import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 import Paper from 'material-ui/Paper';
-// import IconLocationOn from 'material-ui/svg-icons/communication/location-on';
 
 import './menu.scss';
 
-// const bookDatesIcon = <FontIcon className="material-icons">add_shopping_cart</FontIcon>;
-// const listIcon = <FontIcon className="material-icons">list</FontIcon>;
-// const arrowUpIcon = <FontIcon className="material-icons">arrow_drop_up</FontIcon>;
 const sendIcon = <FontIcon className="material-icons">send</FontIcon>;
 const nextIcon = <FontIcon className="material-icons">navigate_next</FontIcon>;
 const beforeIcon = <FontIcon className="material-icons">navigate_before</FontIcon>;
 const clearIcon = <FontIcon className="material-icons">clear</FontIcon>;
-// const removeIcon = <FontIcon className="material-icons">remove</FontIcon>;
+
+import { submit } from 'redux-form'
+
+import createPayload from './createPayload';
+import {
+  getCabinTotals
+} from '../utils/maths';
 
 import {
   updateView,
@@ -25,15 +26,24 @@ import {
 
 import {
   clearSavedCabins,
+  sendEmail,
 } from '../../redux/reducers/UserData/userData';
 
 @connect(
   state => ({
+    cabins: state.cabins,
+
+    contactFormIsValid: state.userData.contactFormIsValid,
     currentView: state.nav.currentView,
+    isNotARobot: state.userData.isNotARobot,
+    priceConfig: state.userData.priceConfig,
     reservation: state.userData.context.reservation,
+    user: state.userData.context.user,
   }),
   ({
     clearSavedCabins,
+    sendEmail,
+    submit,
     updateView,
   })
 )
@@ -42,15 +52,23 @@ import {
 export default class Menu extends Component {
 
   static propTypes = {
+    contactFormIsValid: PropTypes.bool,
     clearSavedCabins: PropTypes.func,
     currentView: PropTypes.string,
+    isNotARobot: PropTypes.bool,
     sendRequest: PropTypes.func,
     updateView: PropTypes.func,
   }
   static defaultProps = {
+    contactFormIsValid: false,
     clearSavedCabins: () => console.log('clear saved cabins'),
     currentView: 'main',
     sendRequest: () => console.log('send request'),
+  }
+
+  handleContactSubmit = () => {
+    this.props.submit('contact');
+    // this.select('confirm');
   }
 
   select = (item) => {
@@ -59,10 +77,39 @@ export default class Menu extends Component {
 
   onClear = () => this.props.clearSavedCabins();
 
+
+  sendEmail = () => {
+
+    const {
+      cabins,
+      priceConfig,
+      reservation,
+      user,
+    } = this.props;
+
+    const fees = getCabinTotals(reservation, cabins, priceConfig);
+    // console.log('reservation: ', reservation);
+    const payload = createPayload(user, reservation, fees, cabins);
+    console.log('payload: ', payload);
+    this.props.sendEmail(payload)
+      .then(res => {
+        // console.log('res: ', res.result);
+        if (res.result.emailSent) {
+          this.props.updateView('success');
+        } else if (res.result.error) {
+          // console.log('res.error: ', res.error);
+        }
+      })
+      .catch(err => console.log('err: ', err));
+  }
+
+
   render() {
 
     const {
+      contactFormIsValid,
       currentView,
+      isNotARobot,
       reservation,
     } = this.props;
 
@@ -73,7 +120,7 @@ export default class Menu extends Component {
 
     const allCabinGuestValuesSet = reservation.cabins.map(cabin => cabin.guests)
                                                      .every(count => count > 0);
-
+    // console.log('contactFormIsValid: ', contactFormIsValid);
     return (
         <Paper zDepth={3} className="menu">
 
@@ -81,9 +128,7 @@ export default class Menu extends Component {
             currentView === 'main'  ?
             <IconButton
               disabled={!hasCabinSaved}
-              onTouchTap={this.onClear}
-              tooltip="Clear Saved Cabins"
-              tooltipPosition="top-right">
+              onTouchTap={this.onClear}>
               {clearIcon}
             </IconButton>
             : null
@@ -144,12 +189,12 @@ export default class Menu extends Component {
             {
               currentView === 'contact' ?
               <RaisedButton
-                onTouchTap={() => this.select('confirm')}
+                onTouchTap={this.handleContactSubmit}
                 label="Save Contact Info"
                 labelPosition="before"
                 primary={true}
                 icon={nextIcon}
-                disabled={!hasCabinSaved}
+                disabled={!contactFormIsValid}
               />
               : null
             }
@@ -165,12 +210,12 @@ export default class Menu extends Component {
             {
               currentView === 'confirm' ?
                 <RaisedButton
-                  onTouchTap={this.props.sendRequest}
+                  onTouchTap={this.sendEmail}
                   label="Submit Request"
                   labelPosition="before"
                   primary={true}
                   icon={sendIcon}
-                  disabled={!hasCabinSaved}
+                  disabled={!isNotARobot}
                 />
               : null
             }

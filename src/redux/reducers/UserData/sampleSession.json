@@ -1,6 +1,7 @@
 {
   "user": {
-    "name": "Chris Anderson",
+    "firstName": "Chris",
+    "lastName": "Anderson",
     "email": "chrandersun@gmail.com",
     "phone": "720-400-2738",
     "message": "this is a sample message"

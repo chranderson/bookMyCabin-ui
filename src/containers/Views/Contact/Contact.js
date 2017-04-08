@@ -1,16 +1,24 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import {
+  Field,
+  Form,
+  reduxForm
+} from 'redux-form';
+import normalizePhone from './normalizePhone'
 
-// import FontIcon from 'material-ui/FontIcon';
 import TextField from 'material-ui/TextField';
-// import RaisedButton from 'material-ui/RaisedButton';
 import './contact.scss';
+import validate from './validate';
+import warn from './warn';
 
 import {
   View
 } from '../../../components';
 
 import {
+  changeValidStatus,
+  handleContactSubmit,
   updateFormData,
 } from '../../../redux/reducers/UserData/userData';
 
@@ -18,13 +26,18 @@ import {
   updateView,
 } from '../../../redux/reducers/Nav/nav';
 
-// const nextIcon = <FontIcon className="material-icons">navigate_next</FontIcon>;
-
+@reduxForm({
+  form: 'contact',
+  validate,
+  warn
+})
 @connect(
   state => ({
-    values: state.userData.values,
+    initialValues: state.userData.context.user // pull initial values from account reducer
   }),
   ({
+    changeValidStatus,
+    handleContactSubmit,
     updateFormData,
     updateView,
   })
@@ -33,6 +46,9 @@ import {
 export default class Contact extends Component {
 
   static propTypes = {
+    changeValidStatus: PropTypes.func,
+    handleContactSubmit: PropTypes.func,
+    initialValues: PropTypes.object,
     updateFormData: PropTypes.func,
     updateView: PropTypes.func,
     title: PropTypes.string
@@ -44,92 +60,109 @@ export default class Contact extends Component {
     title: 'Contact Information'
   }
 
-  handleSubmit = () => {
-    console.log('values submitted: ', this.props.values);
-    this.props.updateView('confirm');
-  };
+  componentWillMount() {
+    this.props.initialize(this.props.initialValues);
+  }
 
-  onFormChange = (evt, field) => this.props.updateFormData(evt.target.id, field);
+  componentWillUpdate(nextProps) {
+    if (this.props.valid !== nextProps.valid) {
+      this.changeValidStatus(nextProps.valid);
+    }
+  }
+
+  changeValidStatus(status) {
+    // console.log('changeValidStatus: ', status);
+    this.props.changeValidStatus(status);
+  }
+
+
+  onFieldUpdate = (evt) => {
+    this.props.updateFormData(evt.target.name, evt.target.value);
+  }
+
+  onSubmit = (values) => {
+    console.log('values: ', values);
+    this.props.handleContactSubmit(values);
+    this.props.updateView('confirm');
+  }
+
+  renderTextField = ({ input, label, type, placeholder, meta: { touched, error, warning }, ...custom }) => {
+    // console.log('input: ', input);
+    return (
+      <TextField className={'textInput'}
+                 floatingLabelText={label}
+                 fullWidth
+                 errorText={touched && (error || warning)}
+                 hintText={placeholder}
+                 multiLine={input.name === 'message'}
+                 rows={input.name === 'message' ? 2 : undefined}
+                 rowsMax={input.name === 'message' ? 10 : undefined}
+                 {...input}
+                 {...custom}
+                 />
+    );
+  };
 
   render() {
 
     const {
       title,
-      values
+      handleSubmit,
+      // pristine,
+      // submitting,
+      // valid,
     } = this.props;
 
-    // const btnStyle = {margin: 12};
-
+    // console.log('initialValues: ', initialValues);
+    // console.log('pristine: ', pristine);
+    // console.log('submitting: ', submitting);
+    // console.log('props: ', this.props);
     return (
       <View>
         <div className="contactView">
-          <form className="formWrap">
+          <Form className="formWrap"
+                onSubmit={handleSubmit(this.onSubmit)}>
             <div className="formHeader">{ title }</div>
             <div className="rowWrap">
-              <TextField className={'textInput'}
-                         errorText={''}
-                         hintText="first"
-                         id="firstName"
-                         floatingLabelText="First Name"
-                         fullWidth
-                         name="firstName"
-                         value={values.firstName}
-                         onChange={this.onFormChange} />
-              <TextField className={'textInput'}
-                         errorText={''}
-                         hintText="last"
-                         id="lastName"
-                         fullWidth
-                         floatingLabelText="Last Name"
-                         name="lastName"
-                         value={values.lastName}
-                         onChange={this.onFormChange} />
+              <Field name="firstName"
+                     label="First Name "
+                     onChange={this.onFieldUpdate}
+                     component={this.renderTextField}
+                     placeholder="Johnny"
+                     type="text"
+                     />
+              <Field name="lastName"
+                     label="Last Name "
+                     onChange={this.onFieldUpdate}
+                     component={this.renderTextField}
+                     placeholder="Hellfire"
+                     type="text" />
             </div>
             <div className="rowWrap">
-            <TextField className={'textInput'}
-                       errorText={''}
-                       fullWidth
-                       hintText="Email"
-                       id="email"
-                       type="email"
-                       floatingLabelText="email address"
-                       name="email"
-                       value={values.email}
-                       onChange={this.onFormChange} />
-            <TextField className={'textInput'}
-                       errorText={''}
-                       fullWidth
-                       hintText="Phone"
-                       id="phone"
-                       name="phone"
-                       floatingLabelText="phone number"
-                       value={values.phone}
-                       onChange={this.onFormChange} />
+              <Field name="email"
+                     label="Email Address"
+                     onChange={this.onFieldUpdate}
+                     component={this.renderTextField}
+                     placeholder="johnny@hellfire.com"
+                     type="email"
+                     />
+              <Field name="phone"
+                     label="Phone Number"
+                     onChange={this.onFieldUpdate}
+                     component={this.renderTextField}
+                     normalize={normalizePhone}
+                     placeholder="720-400-2738"
+                     type="tel"
+                     />
             </div>
-
-            <TextField hintText="message here"
-                       errorText={''}
-                       floatingLabelText="Questions & Comments"
-                       fullWidth={true}
-                       id="message"
-                       name="message"
-                       multiLine={true}
-                       rows={2}
-                       rowsMax={10}
-                       value={values.message}
-                       onChange={this.onFormChange} />
-            { /* <br />
-            <div className="btnWrap">
-              <RaisedButton
-                label="Confirm Request"
-                labelPosition="before"
-                icon={nextIcon}
-                primary={true}
-                onTouchTap={this.handleSubmit}
-                style={{margin:'1.5em 0'}}
-                type="submit" />
-            </div>*/ }
-          </form>
+            <Field name="message"
+                   label="Questions & Comments"
+                   onChange={this.onFieldUpdate}
+                   component={this.renderTextField}
+                   placeholder="your mesage"
+                   type="tel"
+                   />
+          </Form>
         </div>
       </View>
     );

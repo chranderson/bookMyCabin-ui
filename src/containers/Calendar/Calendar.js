@@ -42,6 +42,7 @@ export default class Calendar extends Component {
   }
 
   handleDateSelect = (item) => {
+    // console.log('item: ', item);
     this.props.updateSavedDates(item);
   }
 

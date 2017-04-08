@@ -76,3 +76,72 @@
   // border: 1px solid red;
   // transform: translateY(-2px);
 }
+
+.helpText {
+  font-size: 0.6em;
+  color: darken(lightgrey, 10%);
+  // align-self: flex-end;
+}
+
+.datesList, .aboutCabin {
+  font-weight: 300;
+  @include flexBox(row, wrap, center, flex-start);
+  width: 100%;
+}
+
+.datesList {
+  // border: 1px solid blue;
+  padding: 0 1em 1em;
+  > span {
+    margin: 4px;
+  }
+}
+
+.dateItem {
+  width: 60px;
+  height: 64px;
+  @include flexBox(column, nowrap, space-between, center);
+  border: 1px solid darken(lightgrey, 5%);
+  border-radius: 1px;
+  // paddi: 5px;
+  text-align: center;
+  margin-right: 8px;
+  margin-bottom: 10px;
+  font-family: monospace;
+  background: lighten(lightgrey, 15%);
+  > .dateItemDate {
+    color: $primary;
+    font-size: 1.3em;
+    // font-style: bold;
+    letter-spacing: -3px;
+  }
+  > .dateItemDay {
+    font-size: 0.7em;
+    font-weight: 400;
+    color: darken(lightgrey, 14%);
+    border: 1px solid darken(lightgrey, 5%);
+    margin: 0px 5px 5px;
+    background: $white;
+  }
+}
+
+.addDateItem {
+  cursor: pointer;
+  color: $primary;
+  @include flexBox(row, nowrap, center, center);
+  width: 30px;
+  height: 64px;
+  // border: 1px solid darken(lightgrey, 5%);
+  margin-right: 8px;
+  margin-bottom: 10px;
+
+
+  > .material-icons {
+    color: $primary !important;
+  }
+}
+
+// .aboutCabin {
+//   @include flexBox(row, nowrap, center, space-between);
+//   border: 1px solid black;
+// }

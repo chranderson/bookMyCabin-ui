@@ -1,9 +1,14 @@
-const sampleData = require('./sampleSession.json');
+// const sampleData = require('./sampleSession.json');
 
 import updateCabinDates from './updateCabinDates';
 import updateCabinGuestCount from './updateCabinGuestCount';
 
+const CHANGE_ROBOT_STATUS = 'userData/CHANGE_ROBOT_STATUS';
+const CHANGE_VALID_STATUS = 'userData/CHANGE_VALID_STATUS';
+
 const CLEAR_SAVED_CABINS = 'userData/CLEAR_SAVED_CABINS';
+
+const HANDLE_CONTACT_SUBMIT = 'userData/HANDLE_CONTACT_SUBMIT';
 
 const UPDATE_CABIN_DATES = 'userData/UPDATE_CABIN_DATES';
 const UPDATE_GUEST_COUNT = 'userData/UPDATE_GUEST_COUNT';
@@ -18,32 +23,42 @@ const initialState = {
   loading: false,
   totalCharge: 0,
   values: {
-    firstName: 'Chris',
-    lastName: 'Anderson',
-    email: 'chrandersun@gmail.com',
-    phone: '720-400-2738',
-    message: 'yolo'
-  },
-  context: {
-    reservation: sampleData.reservation,
-    user: sampleData.user
+    // firstName: 'Chris',
+    // lastName: 'Anderson',
+    // email: 'chrandersun@gmail.com',
+    // phone: '720-400-2738',
+    // message: 'yolo'
   },
   // context: {
-  //   reservation: {
-  //     cabins: []
-  //   },
-    // user: {
-    //   name: '',
-    //   email: '',
-    //   phone: '',
-    //   message: ''
-    // }
+  //   reservation: sampleData.reservation,
+  //   // user: sampleData.user,
+  //   user: {
+  //     firstName: '',
+  //     lastName: '',
+  //     email: '',
+  //     phone: '',
+  //     message: ''
+  //   }
   // },
+  context: {
+    reservation: {
+      cabins: []
+    },
+    user: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      message: ''
+    }
+  },
   priceConfig: {
     baseGuestCount: 2,
     extraGuestFee: 25,
     taxRate: 0.03
-  }
+  },
+  contactFormIsValid: false,
+  isNotARobot: false,
 };
 
 
@@ -63,6 +78,16 @@ function updateFieldValue(values, field, newValue) {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case CHANGE_ROBOT_STATUS:
+      return {
+        ...state,
+        isNotARobot: action.status
+      };
+    case CHANGE_VALID_STATUS:
+      return {
+        ...state,
+        contactFormIsValid: action.status
+      };
     case CLEAR_SAVED_CABINS:
       return {
         ...state,
@@ -77,11 +102,34 @@ export default (state = initialState, action) => {
         ...state,
         values: newValues
       };
+    case HANDLE_CONTACT_SUBMIT:
+      // console.log('HANDLE_CONTACT_SUBMIT: ', action.values);
+      // const newValues = updateFieldValue(state.values, action.field, action.value);
+      const {
+        firstName,
+        lastName,
+        email,
+        phone,
+        message
+      } = action.values;
+      return {
+        ...state,
+        context: {
+          reservation: state.context.reservation,
+          user: {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            phone: phone,
+            message: message
+          }
+        }
+      };
     case UPDATE_CABIN_DATES:
       const savedCabins = state.context.reservation.cabins.slice();
       // console.log('savedCabins: ', savedCabins);
       const newSavedCabins = updateCabinDates(savedCabins, action.item);
-      console.log('newSavedCabins: ', newSavedCabins);
+      // console.log('newSavedCabins: ', newSavedCabins);
       return {
         ...state,
         context: {
@@ -130,6 +178,29 @@ export default (state = initialState, action) => {
 export function clearSavedCabins() {
   return {
     type: CLEAR_SAVED_CABINS
+  };
+}
+
+export function changeRobotStatus(status) {
+  return {
+    type: CHANGE_ROBOT_STATUS,
+    status
+  };
+}
+
+export function changeValidStatus(status) {
+  return {
+    type: CHANGE_VALID_STATUS,
+    status
+  };
+}
+
+
+export function handleContactSubmit(values) {
+  // console.log('values: ', values);
+  return {
+    type: HANDLE_CONTACT_SUBMIT,
+    values
   };
 }
 

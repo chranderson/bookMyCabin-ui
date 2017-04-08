@@ -103,8 +103,6 @@ export default class Header extends Component {
     const datePickerStyle = {
       fontFamily: 'monospace',
       opacity: 0.8,
-      // fontWeight: 500,
-      // fontSize: 20,
     };
     const totalFees = getCabinTotals(reservation, cabins, priceConfig);
     return (
@@ -115,7 +113,7 @@ export default class Header extends Component {
         <div className="toolBar">
           {
             currentView === 'main'
-            ? <IconButton onTouchTap={this.handleBackClick} tooltip={'previous fortnight'} className="backBtn">
+            ? <IconButton onTouchTap={this.handleBackClick} className="backBtn">
                 <FontIcon className="material-icons">chevron_left</FontIcon>
               </IconButton>
             : null
@@ -143,7 +141,7 @@ export default class Header extends Component {
 
           {
             currentView === 'main'
-            ? <IconButton onTouchTap={this.handleNextClick} style={{buttonStyle}} tooltip={'next fortnight'} className="backBtn">
+            ? <IconButton onTouchTap={this.handleNextClick} style={{buttonStyle}} className="backBtn">
                 <FontIcon className="material-icons">chevron_right</FontIcon>
               </IconButton>
             : null

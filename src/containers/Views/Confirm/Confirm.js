@@ -1,17 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-
 import Recaptcha from 'react-recaptcha';
 
 import CircularProgress from 'material-ui/CircularProgress';
-import FontIcon from 'material-ui/FontIcon';
-// import Paper from 'material-ui/Paper';
-// import Chip from 'material-ui/Chip';
-import RaisedButton from 'material-ui/RaisedButton';
-// import Subheader from 'material-ui/Subheader';
 import './confirm.scss';
 
-import createCabinPayload from './createCabinPayload';
 
 import {
   getCabinTotals
@@ -19,7 +12,6 @@ import {
 
 import {
   CabinReviewCard,
-  // OccupancySelectField,
   View
 } from '../../../components';
 
@@ -28,8 +20,10 @@ import {
 } from '../../../redux/reducers/Nav/nav';
 
 import {
+  changeRobotStatus,
   sendEmail,
   updateGuestCount,
+  updateSavedDates,
 } from '../../../redux/reducers/UserData/userData';
 
 
@@ -40,19 +34,19 @@ const resetRecaptcha = () => {
   recaptchaInstance.reset();
 };
 
-const sendIcon = <FontIcon className="material-icons">send</FontIcon>;
-
 @connect(
   state => ({
     cabins: state.cabins,
     loading: state.userData.loading,
     priceConfig: state.userData.priceConfig,
     reservation: state.userData.context.reservation,
-    values: state.userData.values,
+    user: state.userData.context.user,
   }),
   ({
+    changeRobotStatus,
     sendEmail,
     updateGuestCount,
+    updateSavedDates,
     updateView,
   })
 )
@@ -61,13 +55,14 @@ export default class Confirm extends Component {
 
   static propTypes = {
     cabins: PropTypes.array,
+    changeRobotStatus: PropTypes.func,
     loading: PropTypes.bool,
     priceConfig: PropTypes.object,
     review: PropTypes.bool,
     sendEmail: PropTypes.func,
     updateGuestCount: PropTypes.func,
     updateView: PropTypes.func,
-    values: PropTypes.object,
+    user: PropTypes.object,
     title: PropTypes.string
   }
 
@@ -96,17 +91,28 @@ export default class Confirm extends Component {
     return total + this.getTax(total);
   }
 
+  goToCabins = () => this.props.updateView('main');
+
   handleSubmit = () => {
     let newView;
     if (this.props.review) {
       newView = 'contact';
       this.props.updateView(newView);
     } else {
-      this.sendEmail();
+      // this.sendEmail();
     }
     resetRecaptcha();
 
   };
+
+  deleteCabinDate = (id, date) => {
+    console.log('id: ', id);
+    console.log('date: ', date);
+    this.props.updateSavedDates({
+      id: id,
+      date: date
+    })
+  }
 
   renderCabinDetails(cabinFees) {
     const {
@@ -127,7 +133,9 @@ export default class Confirm extends Component {
 
       return (
         <CabinReviewCard
+          addCabinDate={this.goToCabins}
           cabin={thisCabin}
+          deleteCabinDate={this.deleteCabinDate}
           fees={cabinFees[savedCabinId]}
           key={index}
           reservation={thisSavedCabin}
@@ -136,46 +144,6 @@ export default class Confirm extends Component {
     })
   }
 
-  sendEmail = () => {
-
-    const {
-      cabins,
-      priceConfig,
-      reservation,
-      values,
-    } = this.props;
-
-    const fees = getCabinTotals(reservation, cabins, priceConfig);
-    // console.log('reservation: ', reservation);
-    const payload = {
-      user: {
-        name: `${values.firstName} ${values.lastName}`,
-        email: values.email,
-        phone: values.phone,
-        message: values.message
-      },
-      reservation: {
-        firstDay: reservation.cabins[0].dates[0],
-        cabins: createCabinPayload(reservation.cabins, fees.cabins, cabins),
-        price: {
-          total: fees.total.toFixed(2),
-          tax: fees.tax.toFixed(2),
-          totalWithTax: fees.totalWithTax.toFixed(2)
-        }
-      }
-    };
-
-    this.props.sendEmail(payload)
-      .then(res => {
-        // console.log('res: ', res.result);
-        if (res.result.emailSent) {
-          this.props.updateView('success');
-        } else if (res.result.error) {
-          // console.log('res.error: ', res.error);
-        }
-      })
-      .catch(err => console.log('err: ', err));
-  }
 
   updateGuestCount = (cabin, count) => {
     const payload = {
@@ -202,10 +170,12 @@ export default class Confirm extends Component {
     this.setState({
       verified: true,
     });
+    this.props.changeRobotStatus(true);
   }
 
   expiredCallback = () => {
     // console.log(`Recaptcha expired`);
+    this.props.changeRobotStatus(false)
     this.setState({
       verified: false,
     });
@@ -270,6 +240,7 @@ export default class Confirm extends Component {
   }
 
   renderUserInfo(user) {
+    // console.log('renderUserInfo: ', user);
     return (
       <div className="userDetails">
         <span><span className="keySpan">Name:</span>{`${user.firstName} ${user.lastName}`}</span>
@@ -286,32 +257,21 @@ export default class Confirm extends Component {
       loading,
       priceConfig,
       review,
-      values,
-
+      user,
       cabins,
       reservation,
     } = this.props;
 
     const cabinFees = getCabinTotals(reservation, cabins, priceConfig);
-    // console.log('cabinFees: ', cabinFees);
-    // const btnStyle = {margin: '1em'};
 
-    console.log('reservation: ', reservation);
     const hasEmptyGuestCount = reservation.cabins.some(cabin => cabin.guests === 0);
-    // console.log('guestCounts: ', guestCounts);
+
     return (
       <View>
         {
           !loading
           ? <div className="confirmView">
             <div className="info">
-              {
-                !review
-                ? this.renderUserInfo(values)
-                : null
-              }
-
-
               {
                 hasEmptyGuestCount
                 ? <span>Please enter number of guests</span>
@@ -327,6 +287,11 @@ export default class Confirm extends Component {
 
             {
               !review
+              ? this.renderUserInfo(user)
+              : null
+            }
+            {
+              !review
               ? this.renderInfo(cabinFees)
               : null
             }
@@ -335,20 +300,6 @@ export default class Confirm extends Component {
               !review
               ? this.renderRecaptcha()
               : null
-            }
-
-            {
-            !review
-            ? <div className="confirmBtnWrap">
-                <RaisedButton
-                  label="Submit Request"
-                  labelPosition="before"
-                  icon={sendIcon}
-                  onTouchTap={this.handleSubmit}
-                  primary={true} fullWidth
-                  disabled={!review ? !this.state.verified : false} />
-              </div>
-             : null
             }
           </div>
           : this.renderLoading()
