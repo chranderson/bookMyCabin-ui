@@ -5,22 +5,54 @@ $dayBg: darken($bg, 4%);
 
 .day {
   flex: 1;
+  // position: relative;
+  box-sizing: border-box;
   @include flexBox(column, nowrap, center, center);
   // border-right: 1px solid rgba(0,0,0,0.2);
-  border-bottom: 1px solid rgba(0,0,0,0.2);
+  // border-bottom: 1px solid rgba(0,0,0,0.2);
   // width: 100%;
   font-size: 0.65em;
   // height: 100%;
   // height: 80px;
   min-width: 60px;
+  height: 60px;
   width: 100%;
-  @include linearGradient(150deg, $dayBg, darken($dayBg, 6%));
+  height: 100%;
+  // @include linearGradient(150deg, $dayBg, darken($dayBg, 6%));
+  // border-bottom: 3px solid transparent;
+  // border-top: 1px solid transparent;
+  // padding-bottom:3px;
+  // border: 3px solid transparent;
 
 }
 
+.notAvailable {
+  // border-right: 1px solid grey;
+  // border-bottom: 1px solid grey;
+  background: darken(lightgrey, 20%);
+}
+.notSelected {
+  border-right: 1px dotted darken(lightgrey, 10%);
+  border-bottom: 1px solid grey;
+}
+
+.selected {
+  // @include linearGradient(-150deg, lighten($dayBg, 4%);
+  // border-color: $primary;
+  border: none;
+  background: lighten($primary, 20%);
+  border-right: 1px solid $primary;
+  border-bottom: 1px solid $primary;
+  opacity: 1;
+  color: $white;
+  // border-bottom: 3px solid $primary;
+  // border-top-color: red;
+}
 
 
-.price, .notAvail {
+.notAvail {
+  position: absolute;
+  bottom: 0;
   @include flexBox(row, nowrap, center, center);
   font-weight: 500;
   width: 100%;
@@ -28,7 +60,6 @@ $dayBg: darken($bg, 4%);
   line-height: 1em;
   padding-top: 3px;
   // border-bottom: 1px solid darken($dayBg, 10%);
-
   // background: darken($dayBg, 10%);
   opacity: 0.8;
 
@@ -39,8 +70,10 @@ $dayBg: darken($bg, 4%);
 }
 
 .status {
-  order: -1;
+  position: relative;
+  // order: -1;
   width: 100%;
+  height: 100%;
   flex: 1;
   @include flexBox(row, nowrap, center, center);
   // border-top: 1px solid lighten($dayBg, 10%);
@@ -54,13 +87,24 @@ $dayBg: darken($bg, 4%);
 }
 .disabled {
   opacity: 0.4;
-  // background: darken($dayBg, 20%);
   cursor: not-allowed;
 }
 
-.selected {
-  @include linearGradient(-150deg, lighten($dayBg, 4%), lighten($dayBg, 8%));
-  // background: yellow;
-  opacity: 1;
-  // border: 2px solid blue;
+
+
+.cabinDayDate {
+  @include fadeInText(1s);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  // width: 100%;
+  text-align: center;
+  color: darken($primary, 10%);
+  // color: $primary;
+  transform: translateY(-1px);
+  // border: 1px solid blue;
+  // opacity: 0;
+  // left: 0;
+  // right: 0;
 }

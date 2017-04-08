@@ -22,8 +22,24 @@ export default class Day extends Component {
     selected: false,
   }
 
+  constructor() {
+    super();
+    this.state = {
+      isHovered: false
+    };
+  }
+
   handleClick = () => {
-    this.props.onSelect({id: this.props.cabinId, date: this.props.date})
+    this.props.onSelect({
+      id: this.props.cabinId,
+      date: this.props.date
+    })
+  };
+
+  handleHover = (evt) => {
+    this.setState({
+      isHovered: evt.type === 'mouseover'
+    });
   };
 
   render() {
@@ -31,45 +47,50 @@ export default class Day extends Component {
     const {
       cabinId,
       date,
-      price,
+      // price,
       booked,
       selected
     } = this.props;
 
+    const {
+      isHovered
+    } = this.state;
     const iconStyles = {
-      color: 'grey',
+      color: selected ? '#ffffff' : 'grey',
+      fontSize: selected ? '3em' : '2em',
     };
 
     let dayStyle = 'day cabinRowItem';
-    dayStyle += booked
-              ? ' disabled'
-              : ' enabled';
-
-    dayStyle += selected
-              ? ' selected'
-              : '';
 
     let statusStyle = 'status';
     statusStyle += booked
-                 ? ' disabled'
+                 ? ' disabled notAvailable'
                  : ' enabled';
+    statusStyle += selected
+                 ? ' selected'
+                 : ' notSelected';
 
     return (
-      <div id={`${date}_${cabinId}`} className={dayStyle}>
-        {
-          booked
-          ? <div className="notAvail">Not Avail</div>
-          : <div className="price">
-              ${price}<span>.00</span>
-            </div>
-        }
+      <div
+        id={`${date}_${cabinId}`}
+        className={dayStyle}
+        onMouseOver={this.handleHover}
+        onMouseLeave={this.handleHover}>
+
         <div className={statusStyle} onClick={!booked && date ? this.handleClick : null}>
           { booked
             ? <FontIcon className="material-icons" style={iconStyles}>block</FontIcon>
             : <FontIcon className="material-icons" style={iconStyles}>
-              { selected ? 'check_box' : 'check_box_outline_blank' }
+              { selected ? 'check' : 'check_box_outline_blank' }
               </FontIcon> }
 
+              {
+                booked
+                ? <div className="notAvail">Not Avail</div>
+                : selected || isHovered
+                  ? <div className="cabinDayDate">{date.slice(0, -3)}</div>
+                  : null
+              }
         </div>
       </div>
     );

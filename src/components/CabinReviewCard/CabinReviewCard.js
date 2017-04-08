@@ -142,8 +142,8 @@ export default class CabinReviewCard extends Component {
                     className="dateItem"
                     key={index}
                     onClick={savedDates.length > 1 ? () => this.deleteCabinDate(date) : null}>
-                    <span className="dateItemDate">{date.slice(0, -3)}</span>
-                    <span className="dateItemDay">{new Date(date).toDateString().slice(0, 3)}</span>
+                    <div className="dateItemDate">{date.slice(0, -3)}</div>
+                    <div className="dateItemDay">{new Date(date).toDateString().slice(0, 3)}</div>
                   </div>
                 );
               })

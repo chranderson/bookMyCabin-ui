@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import Paper from 'material-ui/Paper';
+// import Paper from 'material-ui/Paper';
 
 import {
   updateSavedDates,
@@ -68,6 +68,7 @@ export default class Calendar extends Component {
       reservation,
     } = this.props;
 
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
     const cabinIds = cabins.map(cabin => cabin.id);
 
@@ -76,10 +77,13 @@ export default class Calendar extends Component {
     };
 
     const savedCabins = reservation.cabins;
-
+    const dayOfWeek = new Date(date).getDay();
     return (
       <div className="dayCol" key={indx + date} id={date}>
-        <Paper className="dayHeader colHeader" zDepth={0}>{date.slice(0, -3)}</Paper>
+        <div className="dayHeader" zDepth={0}>
+          <span className="dayName">{dayNames[dayOfWeek]}</span>
+          <span className="dayDate">{date.slice(0, -3)}</span>
+        </div>
         {
           cabinIds.map((cabin, index) => {
             const thisCabin = savedCabins.filter(item => item.id === cabin)[0];
@@ -102,7 +106,10 @@ export default class Calendar extends Component {
             );
           })
         }
-        <div className="dayHeader colHeader">{date.slice(0, -3)}</div>
+        <div className="dayHeader" zDepth={0}>
+          <div className="dayName">{dayNames[dayOfWeek]}</div>
+          <div className="dayDate">{date.slice(0, -3)}</div>
+        </div>
       </div>
     );
   }
