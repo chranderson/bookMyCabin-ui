@@ -48,12 +48,10 @@ export function getBookedDates(dateRanges) {
       const fullDay = 86400000;
       const stayLength = (end - start) + fullDay;
       const totalDays = (stayLength / fullDay);
-
       let datesList = [];
-      for (let index = 0; index < totalDays; index++) {
+      for (let index = 1; index < totalDays + 1; index++) {
         const thisDate = addDays(start, index);
         if (!acc.includes(thisDate)) {
-
           datesList.push(formatDate(addDays(start, index)));
         }
       }

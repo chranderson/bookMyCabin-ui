@@ -57,7 +57,7 @@ export default class Main extends Component {
 
   getEvents = () => {
     this.props.cabins.forEach(cabin => {
-
+      // const cabin = this.props.cabins.filter(cabin => cabin.id === 'cabin7')[0];
       const path = `https://odn75i78e8.execute-api.us-west-2.amazonaws.com/prod/calendar?cabin="${cabin.id}"`;
 
       const request = new Request(path, {

@@ -50,7 +50,7 @@ export default function createPayload(user, reservation, fees, cabins) {
       firstDay: reservation.cabins[0].dates[0],
       cabins: createCabinPayload(reservation.cabins, fees.cabins, cabins),
       price: {
-        deposit: (fees.total / 2).toFixed(2),
+        deposit: (fees.totalWithTax / 2).toFixed(2),
         subTotal: fees.total.toFixed(2),
         tax: fees.tax.toFixed(2),
         totalWithTax: fees.totalWithTax.toFixed(2)

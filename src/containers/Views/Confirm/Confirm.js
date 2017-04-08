@@ -249,7 +249,7 @@ export default class Confirm extends Component {
           </span>
           <div className="depositSection">
             <span className="totalKey">Deposit Due:</span>
-            <span className="totalVal">${(fees.total / 2).toFixed(2)}</span>
+            <span className="totalVal">${(fees.totalWithTax / 2).toFixed(2)}</span>
           </div>
         </div>
       </div>
