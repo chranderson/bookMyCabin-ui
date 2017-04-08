@@ -4,6 +4,7 @@
 const initialState = [
   {
     id: 'cabin1',
+    thumbnails: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin1-thumb.jpg'],
     imgs: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin1.jpeg'],
     url: 'http://silvertiplodgeandcabins.com/tour/cabin-1/',
     booked: [],
@@ -13,6 +14,7 @@ const initialState = [
   },
   {
     id: 'cabin2',
+    thumbnails: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin2-thumb.jpg'],
     imgs: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin2.jpeg'],
     url: 'http://silvertiplodgeandcabins.com/tour/cabin-2/',
     booked: [],
@@ -22,6 +24,7 @@ const initialState = [
   },
   {
     id: 'cabin3',
+    thumbnails: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin3-thumb.jpg'],
     imgs: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin3.jpeg'],
     url: 'http://silvertiplodgeandcabins.com/tour/cabin-3/',
     booked: [],
@@ -31,6 +34,7 @@ const initialState = [
   },
   {
     id: 'cabin4',
+    thumbnails: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin4-thumb.jpg'],
     imgs: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin4.jpeg'],
     url: 'http://silvertiplodgeandcabins.com/tour/cabin-4/',
     booked: [],
@@ -40,6 +44,7 @@ const initialState = [
   },
   {
     id: 'cabin5',
+    thumbnails: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin5-thumb.jpg'],
     imgs: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin5.jpeg'],
     url: 'http://silvertiplodgeandcabins.com/tour/cabin-5/',
     booked: [],
@@ -49,6 +54,7 @@ const initialState = [
   },
   {
     id: 'cabin7',
+    thumbnails: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin7-thumb.jpg'],
     imgs: ['https://s3-us-west-2.amazonaws.com/silvertip-cabin-booker/imgs/cabin7.jpeg'],
     url: 'http://silvertiplodgeandcabins.com/tour/cabin-6/',
     booked: [],

@@ -10,7 +10,7 @@ import normalizePhone from './normalizePhone'
 import TextField from 'material-ui/TextField';
 import './contact.scss';
 import validate from './validate';
-import warn from './warn';
+// import warn from './warn';
 
 import {
   View
@@ -29,7 +29,7 @@ import {
 @reduxForm({
   form: 'contact',
   validate,
-  warn
+  // warn
 })
 @connect(
   state => ({
@@ -125,17 +125,17 @@ export default class Contact extends Component {
             <div className="formHeader">{ title }</div>
             <div className="rowWrap">
               <Field name="firstName"
-                     label="First Name "
+                     label="First Name"
                      onChange={this.onFieldUpdate}
                      component={this.renderTextField}
-                     placeholder="Johnny"
+                     placeholder="John"
                      type="text"
                      />
               <Field name="lastName"
-                     label="Last Name "
+                     label="Last Name"
                      onChange={this.onFieldUpdate}
                      component={this.renderTextField}
-                     placeholder="Hellfire"
+                     placeholder="Anderson"
                      type="text" />
             </div>
             <div className="rowWrap">
@@ -143,24 +143,24 @@ export default class Contact extends Component {
                      label="Email Address"
                      onChange={this.onFieldUpdate}
                      component={this.renderTextField}
-                     placeholder="johnny@hellfire.com"
+                     placeholder="silvertiplodgeandcabins@gmail.com"
                      type="email"
                      />
               <Field name="phone"
                      label="Phone Number"
-                     onChange={this.onFieldUpdate}
+                     onBlur={this.onFieldUpdate}
                      component={this.renderTextField}
+                     placeholder="907-262-4450"
+                     type="text"
                      normalize={normalizePhone}
-                     placeholder="720-400-2738"
-                     type="tel"
                      />
             </div>
             <Field name="message"
                    label="Questions & Comments"
                    onChange={this.onFieldUpdate}
                    component={this.renderTextField}
-                   placeholder="your mesage"
-                   type="tel"
+                   placeholder="your message"
+                   type="text"
                    />
           </Form>
         </div>

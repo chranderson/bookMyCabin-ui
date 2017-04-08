@@ -36,7 +36,7 @@ export default class CabinReviewCard extends Component {
   }
 
   handleAddDateClick = () => {
-    this.props.addCabinDate();
+    this.props.addCabinDate(this.props.cabin.id);
   }
 
   deleteCabinDate = (date) => {
@@ -137,7 +137,11 @@ export default class CabinReviewCard extends Component {
               savedDates.map((date, index) => {
 
                 return (
-                  <div id={date} className="dateItem" key={index} onClick={() => this.deleteCabinDate(date)}>
+                  <div
+                    id={date}
+                    className="dateItem"
+                    key={index}
+                    onClick={savedDates.length > 1 ? () => this.deleteCabinDate(date) : null}>
                     <span className="dateItemDate">{date.slice(0, -3)}</span>
                     <span className="dateItemDay">{new Date(date).toDateString().slice(0, 3)}</span>
                   </div>

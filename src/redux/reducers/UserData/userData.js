@@ -152,19 +152,19 @@ export default (state = initialState, action) => {
       };
 
     case SEND_EMAIL:
-      console.log('SEND_EMAIL: ', action);
+      // console.log('SEND_EMAIL: ', action);
       return {
         ...state,
         loading: true,
       };
     case SEND_EMAIL_SUCCESS:
-      console.log('SEND_EMAIL_SUCCESS: ', action);
+      // console.log('SEND_EMAIL_SUCCESS: ', action);
       return {
         ...state,
         loading: false,
       };
     case SEND_EMAIL_FAIL:
-      console.log('SEND_EMAIL_FAIL: ', action);
+      // console.log('SEND_EMAIL_FAIL: ', action);
       return {
         ...state,
         loading: false,

@@ -51,7 +51,7 @@ export default class Calendar extends Component {
       this.props.cabins.map((cabin, index) => {
          return (
            <CabinCard id={cabin.id}
-                      imgs={cabin.imgs}
+                      imgs={cabin.thumbnails}
                       key={index}
                       name={cabin.name}
                       price={cabin.price} />

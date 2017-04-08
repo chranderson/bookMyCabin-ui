@@ -26,6 +26,11 @@ import {
   updateSavedDates,
 } from '../../../redux/reducers/UserData/userData';
 
+import {
+  getDates,
+} from '../../../redux/reducers/Calendar/calendar';
+
+
 
 let recaptchaInstance;
 
@@ -44,6 +49,7 @@ const resetRecaptcha = () => {
   }),
   ({
     changeRobotStatus,
+    getDates,
     sendEmail,
     updateGuestCount,
     updateSavedDates,
@@ -91,7 +97,14 @@ export default class Confirm extends Component {
     return total + this.getTax(total);
   }
 
-  goToCabins = () => this.props.updateView('main');
+  goToCabins = (id) => {
+    const thisCabin = this.props.reservation.cabins.filter(cabin => cabin.id === id)[0];
+    console.log('goToCabins: ', thisCabin);
+    const firstDay = thisCabin.dates[0];
+    console.log('firstDay: ', firstDay);
+    this.props.getDates(firstDay, 14)
+    this.props.updateView('main');
+  };
 
   handleSubmit = () => {
     let newView;
@@ -189,7 +202,7 @@ export default class Confirm extends Component {
   renderRecaptcha() {
     const captchaKey = '6LeqRRsUAAAAACRJEcUKlPiDxfPoNVvfpouSAGFt';
     return (
-      <div className="confirmBtnWrap">
+      <div className="recapWrap">
         <Recaptcha
           ref={e => recaptchaInstance = e}
           sitekey={captchaKey}
@@ -223,7 +236,7 @@ export default class Confirm extends Component {
         </div>
         <div className="grandTotal">
           <div className="net">
-            <div className="totalKey">{'Net:'}</div>
+            <div className="totalKey">{'Sub Total:'}</div>
             <div className="totalVal">${fees.total.toFixed(2)}</div>
           </div>
           <span className="tax">
@@ -234,6 +247,10 @@ export default class Confirm extends Component {
             <span className="totalKey">Total: </span>
             <span className="totalVal">${fees.totalWithTax.toFixed(2)}</span>
           </span>
+          <div className="depositSection">
+            <span className="totalKey">Deposit Due:</span>
+            <span className="totalVal">${(fees.total / 2).toFixed(2)}</span>
+          </div>
         </div>
       </div>
     );
@@ -273,9 +290,11 @@ export default class Confirm extends Component {
           ? <div className="confirmView">
             <div className="info">
               {
-                hasEmptyGuestCount
-                ? <span>Please enter number of guests</span>
-                : <span>Review Saved Cabins</span>
+                !review
+                ? 'Please review all details before submitting.'
+                : hasEmptyGuestCount
+                  ? <span>Please enter number of guests</span>
+                  : <span>Review Saved Cabins</span>
               }
 
             </div>

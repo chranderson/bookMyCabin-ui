@@ -90,7 +90,7 @@ export default class Header extends Component {
     } = this.props;
 
     const dialogContainerStyle = {
-      border: '1px solid red'
+      // border: '1px solid red'
     };
     const buttonStyle = {
       borderLeft: '1px dotted black',
@@ -149,8 +149,8 @@ export default class Header extends Component {
           {
             currentView !== 'main' && currentView !== 'success'
             ? <div className="headerTotal">
-                <span className="totalLabel">Total:</span>
-                <span style={{fontWeight: 500}}>${totalFees.total}</span>
+                <div className="totalLabel"><span>sub</span><span>total</span></div>
+                <span className="totalFee">${totalFees.total}</span>
                 <span className="totalChange">.{`${totalFees.total.toFixed(2).slice(-2)}`}</span>
               </div>
             : null
