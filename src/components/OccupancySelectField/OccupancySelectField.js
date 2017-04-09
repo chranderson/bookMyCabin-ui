@@ -42,20 +42,14 @@ export default class OccupancySelectField extends Component {
       options,
     } = this.props;
 
-    const dropdownStyle = {
-      maxWidth: '150px',
-      // margin: 0,
-      // padding: 0,
-      // border: '1px solid blue',
-      // fontSize: '1.1em',
-    };
     return (
       <div className="occSelectField">
         <SelectField
-          hintText="Guest count"
+          errorText={!defaultValue ? 'required field' : ''}
+          hintText="Enter Number of Guests"
           value={defaultValue ? defaultValue : undefined}
           onChange={this.handleChange}
-          style={dropdownStyle}>
+        >
           {this.renderOptions(options)}
         </SelectField>
       </div>

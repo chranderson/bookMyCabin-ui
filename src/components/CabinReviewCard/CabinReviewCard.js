@@ -76,12 +76,16 @@ export default class CabinReviewCard extends Component {
              title={`Link to ${cabin.name} details`}>
             { cabin.name }
           </a>
-          <OccupancySelectField
-            defaultValue={reservation.guests}
-            id={cabin.id}
-            onChange={this.props.updateGuestCount}
-            options={cabin.sleeps} />
-          <span>{`${fees.total.toFixed(2)}`}</span>
+          <span>${`${fees.total.toFixed(2)}`}</span>
+        </div>
+
+
+        <div ref="guestCountSelector" className="guestCountForm">
+        <OccupancySelectField
+          defaultValue={reservation.guests}
+          id={cabin.id}
+          onChange={this.props.updateGuestCount}
+          options={cabin.sleeps} />
         </div>
 
         <div ref="baseFee" className="cabinReviewBodyRow">

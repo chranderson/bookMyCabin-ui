@@ -251,6 +251,7 @@ export default class Confirm extends Component {
             <span className="totalKey">Deposit Due:</span>
             <span className="totalVal">${(fees.totalWithTax / 2).toFixed(2)}</span>
           </div>
+          <span className="helpText">We will call you shortly after you submit to collect deposit</span>
         </div>
       </div>
     );
@@ -281,7 +282,7 @@ export default class Confirm extends Component {
 
     const cabinFees = getCabinTotals(reservation, cabins, priceConfig);
 
-    const hasEmptyGuestCount = reservation.cabins.some(cabin => cabin.guests === 0);
+    // const hasEmptyGuestCount = reservation.cabins.some(cabin => cabin.guests === 0);
 
     return (
       <View>
@@ -291,10 +292,7 @@ export default class Confirm extends Component {
             <div className="info">
               {
                 !review
-                ? 'Please review all details before submitting.'
-                : hasEmptyGuestCount
-                  ? <span>Please enter number of guests</span>
-                  : <span>Review Saved Cabins</span>
+                && 'Please review all details before submitting.'
               }
 
             </div>

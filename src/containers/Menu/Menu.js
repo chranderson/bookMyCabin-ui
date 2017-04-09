@@ -118,8 +118,10 @@ export default class Menu extends Component {
     // console.log('totalBookedDates: ', totalBookedDates);
     // console.log('currentView: ', currentView);
 
-    const allCabinGuestValuesSet = reservation.cabins.map(cabin => cabin.guests)
+    const allCabinGuestValuesSet = reservation.cabins.filter(cabin => cabin.dates.length)
+                                                     .map(cabin => cabin.guests)
                                                      .every(count => count > 0);
+    console.log('reservation.cabins: ', reservation.cabins);
     // console.log('contactFormIsValid: ', contactFormIsValid);
     return (
         <Paper zDepth={3} className="menu">

@@ -22,12 +22,12 @@ export default class Day extends Component {
     selected: false,
   }
 
-  constructor() {
-    super();
-    this.state = {
-      isHovered: false
-    };
-  }
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     isHovered: false
+  //   };
+  // }
 
   handleClick = () => {
     this.props.onSelect({
@@ -36,11 +36,11 @@ export default class Day extends Component {
     })
   };
 
-  handleHover = (evt) => {
-    this.setState({
-      isHovered: evt.type === 'mouseover'
-    });
-  };
+  // handleHover = (evt) => {
+  //   this.setState({
+  //     isHovered: evt.type === 'mouseover'
+  //   });
+  // };
 
   render() {
 
@@ -52,9 +52,9 @@ export default class Day extends Component {
       selected
     } = this.props;
 
-    const {
-      isHovered
-    } = this.state;
+    // const {
+    //   isHovered
+    // } = this.state;
     const iconStyles = {
       color: selected ? '#ffffff' : 'grey',
       fontSize: selected ? '3em' : '2em',
@@ -73,9 +73,7 @@ export default class Day extends Component {
     return (
       <div
         id={`${date}_${cabinId}`}
-        className={dayStyle}
-        onMouseOver={this.handleHover}
-        onMouseLeave={this.handleHover}>
+        className={dayStyle}>
 
         <div className={statusStyle} onClick={!booked && date ? this.handleClick : null}>
           { booked
@@ -87,7 +85,7 @@ export default class Day extends Component {
               {
                 booked
                 ? <div className="notAvail">Not Avail</div>
-                : selected || isHovered
+                : selected
                   ? <div className="cabinDayDate">{date.slice(0, -3)}</div>
                   : null
               }

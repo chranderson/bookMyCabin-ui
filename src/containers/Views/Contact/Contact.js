@@ -157,6 +157,7 @@ export default class Contact extends Component {
             </div>
             <Field name="message"
                    label="Questions & Comments"
+                   style={{marginBottom: 100}}
                    onChange={this.onFieldUpdate}
                    component={this.renderTextField}
                    placeholder="your message"

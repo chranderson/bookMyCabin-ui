@@ -53,9 +53,11 @@ $dayBg: darken($bg, 4%);
 .notAvail {
   position: absolute;
   bottom: 0;
+  left: 0;
+  right: 0;
   @include flexBox(row, nowrap, center, center);
   font-weight: 500;
-  width: 100%;
+  // width: 100%;
   height: 20px;
   line-height: 1em;
   padding-top: 3px;

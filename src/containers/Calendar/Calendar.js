@@ -80,7 +80,7 @@ export default class Calendar extends Component {
     const dayOfWeek = new Date(date).getDay();
     return (
       <div className="dayCol" key={indx + date} id={date}>
-        <div className="dayHeader" zDepth={0}>
+        <div className="dayHeader">
           <span className="dayName">{dayNames[dayOfWeek]}</span>
           <span className="dayDate">{date.slice(0, -3)}</span>
         </div>
@@ -106,7 +106,7 @@ export default class Calendar extends Component {
             );
           })
         }
-        <div className="dayHeader" zDepth={0}>
+        <div className="dayHeader">
           <div className="dayName">{dayNames[dayOfWeek]}</div>
           <div className="dayDate">{date.slice(0, -3)}</div>
         </div>

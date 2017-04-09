@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import {Card, CardMedia, CardTitle} from 'material-ui/Card';
 
 import './cabin.scss'
 
@@ -25,7 +24,7 @@ export default class CabinCard extends Component {
     price: '',
     showOverlay: true,
   }
-  
+
   renderCalendar() {
     const {
       price
@@ -46,27 +45,23 @@ export default class CabinCard extends Component {
       id,
       imgs,
       name,
-      showOverlay
+      // showOverlay
     } = this.props;
 
-  const cardTitleStyle = {
-    fontFamily: 'monospace'
-  };
+  // const cardTitleStyle = {
+  //   fontFamily: 'monospace'
+  // };
 
-  const overlayStyles = {
-    background: 'rgba(0,0,0,0.4)',
-    // opacity: 0.1
+  const bgImgStyle = {
+    background: `url(${imgs[0]}) right top`,
+    backgroundSize: 'cover'
   };
 
     return (
-      <div className="cabin cabinRowItem" id={id}>
-        <Card>
-          <CardMedia
-            overlay={ showOverlay ? <CardTitle title={name.slice(-1)} style={cardTitleStyle} /> : null}
-            overlayContentStyle={overlayStyles}>
-            <img src={imgs[0]} title={name} role="presentation" />
-          </CardMedia>
-        </Card>
+      <div className="cabin" id={id} style={bgImgStyle}>
+        <div className="cabinTitle">
+          <div>{name.slice(-1)}</div>
+        </div>
       </div>
     );
   }
