@@ -111,18 +111,23 @@ export default class Menu extends Component {
       currentView,
       isNotARobot,
       reservation,
+      user
     } = this.props;
 
     const totalBookedDates = reservation.cabins.reduce((acc, cabin) => [...acc, ...cabin.dates], []);
     const hasCabinSaved = totalBookedDates.length > 0;
-    // console.log('totalBookedDates: ', totalBookedDates);
-    // console.log('currentView: ', currentView);
 
     const allCabinGuestValuesSet = reservation.cabins.filter(cabin => cabin.dates.length)
                                                      .map(cabin => cabin.guests)
                                                      .every(count => count > 0);
-    console.log('reservation.cabins: ', reservation.cabins);
-    // console.log('contactFormIsValid: ', contactFormIsValid);
+
+    const requiredKeys = ['firstName', 'lastName', 'email', 'phone'];
+    const hasUserValues = requiredKeys.map(key => user[key])
+                                      .every(value => value.length);
+
+    const disableContactForm = hasUserValues
+                             ? false
+                             : !contactFormIsValid;
     return (
         <Paper zDepth={3} className="menu">
 
@@ -196,7 +201,7 @@ export default class Menu extends Component {
                 labelPosition="before"
                 primary={true}
                 icon={nextIcon}
-                disabled={!contactFormIsValid}
+                disabled={disableContactForm}
               />
               : null
             }
